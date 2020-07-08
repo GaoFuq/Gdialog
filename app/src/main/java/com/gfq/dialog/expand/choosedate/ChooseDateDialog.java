@@ -25,6 +25,10 @@ public class ChooseDateDialog {
     private DialogType dialogType;
     private DateType dateType;
 
+    private int wvTextColor = Color.parseColor("#999999");
+    private int wvTextColorCenter = Color.parseColor("#333333");
+    private int wvTextSize = 14;
+
     public ChooseDateDialog(@NotNull Context context, @NotNull DialogType dialogType, @NotNull DateType dateType) {
         this.context = context;
         this.dialogType = dialogType;
@@ -142,9 +146,7 @@ public class ChooseDateDialog {
                 int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
 
                 wvDay.setCurrentItem(d - 1);
-                setWheelViewOptions(wvYear);
-                setWheelViewOptions(wvMonth);
-                setWheelViewOptions(wvDay);
+                setWheelViewDefStyle();
 
                 wvYear.setOnItemSelectedListener(index -> year = (int) wvYear.getAdapter().getItem(index) + "");
                 wvMonth.setOnItemSelectedListener(index -> month = (int) wvMonth.getAdapter().getItem(index) + "");
@@ -176,19 +178,36 @@ public class ChooseDateDialog {
         }
     }
 
-    private void setWheelViewOptions(WheelView wv) {
-        wv.setTextColorOut(Color.parseColor("#333333"));
-        wv.setTextColorCenter(Color.parseColor("#00A0E9"));
-        wv.setTextSize(50);
+    private void setWheelViewDefStyle() {
+        binding.wvYear.setTextColorOut(wvTextColor);
+        binding.wvYear.setTextColorCenter(wvTextColorCenter);
+        binding.wvYear.setTextSize(wvTextSize);
+        binding.wvYear.setLabel("年");
+
+        binding.wvMonth.setTextColorOut(wvTextColor);
+        binding.wvMonth.setTextColorCenter(wvTextColorCenter);
+        binding.wvMonth.setTextSize(wvTextSize);
+        binding.wvMonth.setLabel("月");
+
+        binding.wvDay.setTextColorOut(wvTextColor);
+        binding.wvDay.setTextColorCenter(wvTextColorCenter);
+        binding.wvDay.setTextSize(wvTextSize);
+        binding.wvDay.setLabel("日");
     }
 
-    public void setConfirmStyle(String text,int textColor,int textSize){
+    public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
+        this.wvTextColor = textColor;
+        this.wvTextColorCenter = textColorCenter;
+        this.wvTextSize = textSize;
+    }
+
+    public void setConfirmStyle(String text, int textColor, int textSize) {
         binding.tvConfirm.setText(text);
         binding.tvConfirm.setTextColor(textColor);
         binding.tvConfirm.setTextSize(DensityUtil.px2sp(textSize));
     }
 
-    public void setCancelStyle(String text,int textColor,int textSize){
+    public void setCancelStyle(String text, int textColor, int textSize) {
         binding.tvCancel.setText(text);
         binding.tvCancel.setTextColor(textColor);
         binding.tvCancel.setTextSize(DensityUtil.px2sp(textSize));
