@@ -39,7 +39,7 @@ public class BaseBottomRoundDialog<T extends ViewDataBinding> extends FrameLayou
         dialog = new BottomSheetDialog(context);
         dialog.setContentView(view);
         dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
-//        dialog.setCancelable(false);//返回键  是否dismiss
+        dialog.setCancelable(false);
     }
 
     @Override

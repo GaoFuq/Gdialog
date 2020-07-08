@@ -53,7 +53,7 @@ public class WheelView extends View {
     private OnItemSelectedListener onItemSelectedListener;
 
     private boolean isOptions = false;
-    private boolean isCenterLabel = true;
+    private boolean isCenterLabel = true;//是否只显示选中的item的附加单位
 
     // Timer mTimer;
     private ScheduledExecutorService mExecutor = Executors.newSingleThreadScheduledExecutor();

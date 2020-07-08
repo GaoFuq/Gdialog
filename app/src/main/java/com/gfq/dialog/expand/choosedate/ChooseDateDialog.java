@@ -14,8 +14,6 @@ import com.gfq.dialog.base.GDialog;
 import com.gfq.dialog.databinding.DialogChooseDateBinding;
 import com.gfq.dialog.util.DensityUtil;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -27,9 +25,9 @@ public class ChooseDateDialog {
 
     private int wvTextColor = Color.parseColor("#999999");
     private int wvTextColorCenter = Color.parseColor("#333333");
-    private int wvTextSize = 14;
+    private int wvTextSize = 16;
 
-    public ChooseDateDialog(@NotNull Context context, @NotNull DialogType dialogType, @NotNull DateType dateType) {
+    public ChooseDateDialog(Context context, DialogType dialogType, DateType dateType) {
         this.context = context;
         this.dialogType = dialogType;
         this.dateType = dateType;
@@ -146,7 +144,7 @@ public class ChooseDateDialog {
                 int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
 
                 wvDay.setCurrentItem(d - 1);
-                setWheelViewDefStyle();
+                setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
 
                 wvYear.setOnItemSelectedListener(index -> year = (int) wvYear.getAdapter().getItem(index) + "");
                 wvMonth.setOnItemSelectedListener(index -> month = (int) wvMonth.getAdapter().getItem(index) + "");
@@ -178,41 +176,59 @@ public class ChooseDateDialog {
         }
     }
 
-    private void setWheelViewDefStyle() {
-        binding.wvYear.setTextColorOut(wvTextColor);
-        binding.wvYear.setTextColorCenter(wvTextColorCenter);
-        binding.wvYear.setTextSize(wvTextSize);
+    private void setWheelViewDefStyle(int textColor, int textColorCenter, int textSize) {
+        binding.wvYear.setTextColorOut(textColor);
+        binding.wvYear.setTextColorCenter(textColorCenter);
+        binding.wvYear.setTextSize(textSize);
         binding.wvYear.setLabel("年");
 
-        binding.wvMonth.setTextColorOut(wvTextColor);
-        binding.wvMonth.setTextColorCenter(wvTextColorCenter);
-        binding.wvMonth.setTextSize(wvTextSize);
+        binding.wvMonth.setTextColorOut(textColor);
+        binding.wvMonth.setTextColorCenter(textColorCenter);
+        binding.wvMonth.setTextSize(textSize);
         binding.wvMonth.setLabel("月");
 
-        binding.wvDay.setTextColorOut(wvTextColor);
-        binding.wvDay.setTextColorCenter(wvTextColorCenter);
-        binding.wvDay.setTextSize(wvTextSize);
+        binding.wvDay.setTextColorOut(textColor);
+        binding.wvDay.setTextColorCenter(textColorCenter);
+        binding.wvDay.setTextSize(textSize);
         binding.wvDay.setLabel("日");
     }
 
+    //是否只显示中间的Label
+    public void isCenterLabel(boolean b){
+        binding.wvYear.isCenterLabel(b);
+        binding.wvMonth.isCenterLabel(b);
+        binding.wvDay.isCenterLabel(b);
+    }
+
+
+
     public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
-        this.wvTextColor = textColor;
-        this.wvTextColorCenter = textColorCenter;
-        this.wvTextSize = textSize;
+        setWheelViewDefStyle(textColor,textColorCenter,textSize);
+    }
+
+    public void setTitleStyle(String text, int textColor, int textSize) {
+        binding.tvTitle.setText(text);
+        binding.tvTitle.setTextColor(textColor);
+        binding.tvTitle.setTextSize(textSize);
     }
 
     public void setConfirmStyle(String text, int textColor, int textSize) {
         binding.tvConfirm.setText(text);
         binding.tvConfirm.setTextColor(textColor);
-        binding.tvConfirm.setTextSize(DensityUtil.px2sp(textSize));
+        binding.tvConfirm.setTextSize(textSize);
     }
 
     public void setCancelStyle(String text, int textColor, int textSize) {
         binding.tvCancel.setText(text);
         binding.tvCancel.setTextColor(textColor);
-        binding.tvCancel.setTextSize(DensityUtil.px2sp(textSize));
+        binding.tvCancel.setTextSize(textSize);
     }
+    public void setLineHeight(float lineHeight){
+        binding.wvYear.setLineSpacingMultiplier(lineHeight);
+        binding.wvMonth.setLineSpacingMultiplier(lineHeight);
+        binding.wvDay.setLineSpacingMultiplier(lineHeight);
 
+    }
     public void show() {
         if (chooseDateDialog != null) {
             chooseDateDialog.show();
