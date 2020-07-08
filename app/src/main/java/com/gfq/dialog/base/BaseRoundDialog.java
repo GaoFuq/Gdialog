@@ -23,15 +23,15 @@ import com.gfq.dialog.util.DensityUtil;
  * on {2019/10/15} {17:22}
  * desctapion:
  */
-public class BaseRoundDialog<T extends ViewDataBinding> {
-    private T dialogBinding;
+public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
+    protected T dialogBinding;
     private Context context;
     private View view;
     private AlertDialog roundDialog;
     private CardView cardView;
     private FrameLayout container;
-    private View childView;
     private LayoutInflater layoutInflater;
+
     public BaseRoundDialog(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -60,18 +60,12 @@ public class BaseRoundDialog<T extends ViewDataBinding> {
     }
 
 
-    public View setContentView(@LayoutRes int layout) {
-        childView = layoutInflater.inflate(layout, null, false);
-        container.addView(childView);
-        return childView;
-    }
-
-    public T bindView(@LayoutRes int layout) {
+    @Override
+    public T bindView(int layout) {
         dialogBinding = DataBindingUtil.inflate(layoutInflater, layout, null, false);
         container.addView(dialogBinding.getRoot());
         return dialogBinding;
     }
-
 
     public void show() {
         roundDialog.show();
@@ -93,6 +87,7 @@ public class BaseRoundDialog<T extends ViewDataBinding> {
     public void setCanceledOnTouchOutside(boolean boo) {
         roundDialog.setCanceledOnTouchOutside(boo);
     }
+
 
 }
 
