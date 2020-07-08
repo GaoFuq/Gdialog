@@ -4,6 +4,6 @@
     <dimen name="dp_15">15dp</dimen>
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_20">20dp</dimen>
-    <dimen name="dp_50">50</dimen>
+    <dimen name="dp_50">50dp</dimen>
     <dimen name="sp_14">14sp</dimen>
 </resources>
