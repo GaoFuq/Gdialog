@@ -72,7 +72,7 @@ public class ChooseSalaryRangeDialog {
             minSalaryList.add(i);
         }
 
-        for (int i = minSalary+1; i < maxSalary + 1; i++) {
+        for (int i = minSalary + 1; i < maxSalary + 1; i++) {
             maxSalaryList.add(i);
         }
 
@@ -111,17 +111,21 @@ public class ChooseSalaryRangeDialog {
                     @Override
                     public void onItemSelected(int index) {
                         selectedMinSalary = minSalaryList.get(index);
-                        maxSalaryList.clear();
                         if (selectedMinSalary == maxSalary) {
+                            maxSalaryList.clear();
                             maxSalaryList.add(selectedMinSalary);
                             binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
                             return;
                         }
-                        for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
-                            maxSalaryList.add(i);
+                        if (selectedMinSalary >= selectedMaxSalary) {
+                            maxSalaryList.clear();
+                            for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
+                                maxSalaryList.add(i);
+                            }
+                            binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
+                            binding.wvMax.setCurrentItem(0);
                         }
-                        binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
-                        binding.wvMax.setCurrentItem(0);
+
                     }
                 });
                 binding.wvMax.setOnItemSelectedListener(new OnItemSelectedListener() {
