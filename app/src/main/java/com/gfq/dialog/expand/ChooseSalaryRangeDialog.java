@@ -72,7 +72,7 @@ public class ChooseSalaryRangeDialog {
             minSalaryList.add(i);
         }
 
-        for (int i = selectedMinSalary; i < maxSalary + 1; i++) {
+        for (int i = minSalary+1; i < maxSalary + 1; i++) {
             maxSalaryList.add(i);
         }
 
@@ -101,7 +101,7 @@ public class ChooseSalaryRangeDialog {
                 binding.wvMin.setCyclic(false);
                 binding.wvMax.setCyclic(false);
                 binding.wvMin.setCurrentItem(0);
-                binding.wvMax.setCurrentItem(1);
+                binding.wvMax.setCurrentItem(0);
 
                 setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
                 setLineHeight(3);

@@ -134,9 +134,9 @@ public class ChooseDateDialog {
                 WheelView wvDay = binding.wvDay;
                 //默认-年月日-都有
                 if (dateType == DateType.year_month) {
-                    wvMonth.setVisibility(View.GONE);
-                } else if (dateType == DateType.month_day) {
                     wvDay.setVisibility(View.GONE);
+                } else if (dateType == DateType.month_day) {
+                    wvYear.setVisibility(View.GONE);
                 }
                 wvYear.setAdapter(yearAdapter);
                 wvMonth.setAdapter(monthAdapter);
