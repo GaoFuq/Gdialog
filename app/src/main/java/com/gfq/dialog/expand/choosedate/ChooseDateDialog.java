@@ -153,6 +153,8 @@ public class ChooseDateDialog {
 
                 setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
                 setLineHeight(3);
+                isCenterLabel(false);
+
 
                 wvYear.setOnItemSelectedListener(index -> year = (int) wvYear.getAdapter().getItem(index) + "");
                 wvMonth.setOnItemSelectedListener(index -> month = (int) wvMonth.getAdapter().getItem(index) + "");
@@ -201,7 +203,7 @@ public class ChooseDateDialog {
         binding.wvDay.setLabel("日");
     }
 
-    //是否只显示中间的Label
+    //是否只显示中间的Label  默认为true
     public void isCenterLabel(boolean b){
         binding.wvYear.isCenterLabel(b);
         binding.wvMonth.isCenterLabel(b);

@@ -16,6 +16,7 @@ import com.gfq.dialog.expand.choosedate.ChooseDateDialog;
 import com.gfq.dialog.expand.choosedate.DateType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @created GaoFuq
@@ -74,6 +75,7 @@ public class ChooseSalaryRangeDialog {
         for (int i = selectedMinSalary; i < maxSalary; i++) {
             maxSalaryList.add(i);
         }
+
         wvMinAdapter = new WheelAdapter<String>() {
             @Override
             public int getItemsCount() {
@@ -106,10 +108,11 @@ public class ChooseSalaryRangeDialog {
                 return maxSalaryList.indexOf(o);
             }
         };
+//        wvMinAdapter = new SalaryAdapter(minSalaryList);
+//        wvMaxAdapter = new SalaryAdapter(maxSalaryList);
 
 
     }
-
 
 
     private void initDialog() {
@@ -132,10 +135,15 @@ public class ChooseSalaryRangeDialog {
                 binding.wvMin.setCurrentItem(0);
                 binding.wvMax.setCurrentItem(0);
 
+                setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
+                setLineHeight(3);
+                isCenterLabel(false);
+
                 binding.wvMin.setOnItemSelectedListener(new OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(int index) {
                         selectedMinSalary = minSalaryList.get(index);
+                        maxSalaryList.clear();
                         for (int i = selectedMinSalary; i < maxSalary; i++) {
                             maxSalaryList.add(i);
                         }
@@ -172,14 +180,15 @@ public class ChooseSalaryRangeDialog {
         binding.wvMax.setTextSize(textSize);
         binding.wvMax.setLabel(label);
     }
-    //是否只显示中间的Label
-    public void isCenterLabel(boolean b){
+
+    //是否只显示中间的Label  默认为true
+    public void isCenterLabel(boolean b) {
         binding.wvMin.isCenterLabel(b);
         binding.wvMax.isCenterLabel(b);
     }
 
     public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
-        setWheelViewDefStyle(textColor,textColorCenter,textSize);
+        setWheelViewDefStyle(textColor, textColorCenter, textSize);
     }
 
     public void setTitleStyle(String text, int textColor, int textSize) {
@@ -199,10 +208,12 @@ public class ChooseSalaryRangeDialog {
         binding.tvCancel.setTextColor(textColor);
         binding.tvCancel.setTextSize(textSize);
     }
-    public void setLineHeight(float lineHeight){
+
+    public void setLineHeight(float lineHeight) {
         binding.wvMin.setLineSpacingMultiplier(lineHeight);
         binding.wvMax.setLineSpacingMultiplier(lineHeight);
     }
+
     public void show() {
         if (dialog != null) {
             dialog.show();
@@ -219,4 +230,33 @@ public class ChooseSalaryRangeDialog {
     public void setOnConfirmListener(OnConfirmListener onConfirmListener) {
         this.onConfirmListener = onConfirmListener;
     }
+
+    /*class SalaryAdapter implements WheelAdapter<String> {
+
+        private List<Integer> list;
+
+        public SalaryAdapter(List<Integer> list) {
+            this.list = list;
+        }
+
+        public void updateDataList(List<Integer> newList){
+            list.clear();
+            list.addAll(newList);
+        }
+
+        @Override
+        public int getItemsCount() {
+            return list.size();
+        }
+
+        @Override
+        public String getItem(int index) {
+            return list.get(index) + label;
+        }
+
+        @Override
+        public int indexOf(String o) {
+            return 0;
+        }
+    }*/
 }
