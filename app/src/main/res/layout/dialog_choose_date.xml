@@ -68,6 +68,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/ll_year"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_month"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -94,6 +96,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_day"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

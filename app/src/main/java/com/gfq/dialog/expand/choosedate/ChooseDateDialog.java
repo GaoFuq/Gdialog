@@ -129,36 +129,34 @@ public class ChooseDateDialog {
                 assert dialog != null;
                 binding = dialog.bindView(R.layout.dialog_choose_date);
 
-                WheelView wvYear = binding.wvYear;
-                WheelView wvMonth = binding.wvMonth;
-                WheelView wvDay = binding.wvDay;
                 //默认-年月日-都有
                 if (dateType == DateType.year_month) {
-                    wvDay.setVisibility(View.GONE);
+                    binding.llDay.setVisibility(View.GONE);
                 } else if (dateType == DateType.month_day) {
-                    wvYear.setVisibility(View.GONE);
+                    binding.llYear.setVisibility(View.GONE);
                 }
-                wvYear.setAdapter(yearAdapter);
-                wvMonth.setAdapter(monthAdapter);
-                wvDay.setAdapter(dayAdapter);
-                wvYear.setCyclic(false);
-                wvMonth.setCyclic(false);
-                wvYear.setCurrentItem(0);
+                binding.wvYear.setAdapter(yearAdapter);
+                binding.wvMonth.setAdapter(monthAdapter);
+                binding.wvDay.setAdapter(dayAdapter);
+
+                binding.wvYear.setCyclic(false);
+                binding.wvMonth.setCyclic(false);
+                binding.wvYear.setCurrentItem(0);
 
                 int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
-                wvMonth.setCurrentItem(m);
+                binding.wvMonth.setCurrentItem(m);
                 int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
 
-                wvDay.setCurrentItem(d - 1);
+                binding.wvDay.setCurrentItem(d - 1);
 
                 setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
                 setLineHeight(3);
                 isCenterLabel(false);
 
 
-                wvYear.setOnItemSelectedListener(index -> year = (int) wvYear.getAdapter().getItem(index) + "");
-                wvMonth.setOnItemSelectedListener(index -> month = (int) wvMonth.getAdapter().getItem(index) + "");
-                wvDay.setOnItemSelectedListener(index -> day = (int) wvDay.getAdapter().getItem(index) + "");
+                binding.wvYear.setOnItemSelectedListener(index -> year = (int) binding.wvYear.getAdapter().getItem(index) + "");
+                binding.wvMonth.setOnItemSelectedListener(index -> month = (int) binding.wvMonth.getAdapter().getItem(index) + "");
+                binding.wvDay.setOnItemSelectedListener(index -> day = (int) binding.wvDay.getAdapter().getItem(index) + "");
 
                 binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
                 binding.tvConfirm.setOnClickListener(v -> {
