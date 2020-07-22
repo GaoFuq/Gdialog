@@ -67,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <FrameLayout
+                <LinearLayout
+                    android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -77,9 +78,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
-                </FrameLayout>
+                </LinearLayout>
 
-                <FrameLayout
+                <LinearLayout
+                    android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -89,9 +91,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
-                </FrameLayout>
+                </LinearLayout>
 
-                <FrameLayout
+                <LinearLayout
+                    android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -100,8 +103,8 @@
                         android:id="@+id/wv_day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </FrameLayout>
+                        />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
