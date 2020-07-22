@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
  * on {2019/10/17} {10:05}
  * desctapion:
  */
-public class BaseBottomRoundDialog<T extends ViewDataBinding> extends FrameLayout  implements GDialog<T>{
+public class BaseBottomRoundDialog<T extends ViewDataBinding> extends FrameLayout implements GDialog<T> {
     private final LayoutInflater layoutInflater;
     protected T dialogBinding;
     private BottomSheetDialog dialog;
@@ -40,6 +40,7 @@ public class BaseBottomRoundDialog<T extends ViewDataBinding> extends FrameLayou
         dialog.setContentView(view);
         dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
     }
 
     @Override

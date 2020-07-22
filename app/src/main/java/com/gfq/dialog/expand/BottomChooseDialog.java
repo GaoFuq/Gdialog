@@ -33,7 +33,6 @@ public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<Bottom
 
     private void init() {
         dialogBinding = bindView(R.layout.bottom_choose_dialog);
-
         dialogBinding.tvTitle.setText(getTitle());
         dialogBinding.tvCancel.setOnClickListener(v -> dismiss());
         dialogBinding.tvConfirm.setOnClickListener(v -> {
@@ -69,8 +68,24 @@ public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<Bottom
         dialogBinding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
         dialogBinding.wheelView.setLineSpacingMultiplier(3);
         dialogBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
+    }
 
+    public void setTitleStyle(String text, int textColor, int textSize) {
+        dialogBinding.tvTitle.setText(text);
+        dialogBinding.tvTitle.setTextColor(textColor);
+        dialogBinding.tvTitle.setTextSize(textSize);
+    }
 
+    public void setConfirmStyle(String text, int textColor, int textSize) {
+        dialogBinding.tvConfirm.setText(text);
+        dialogBinding.tvConfirm.setTextColor(textColor);
+        dialogBinding.tvConfirm.setTextSize(textSize);
+    }
+
+    public void setCancelStyle(String text, int textColor, int textSize) {
+        dialogBinding.tvCancel.setText(text);
+        dialogBinding.tvCancel.setTextColor(textColor);
+        dialogBinding.tvCancel.setTextSize(textSize);
     }
 
     protected abstract String getTitle();
