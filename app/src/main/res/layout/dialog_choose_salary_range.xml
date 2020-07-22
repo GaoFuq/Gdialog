@@ -39,9 +39,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    tools:text="TITLE"
                     android:textColor="@color/c_333333"
-                    android:textSize="@dimen/sp_14"
-                    tools:text="TITLE" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:id="@+id/tv_confirm"
@@ -69,39 +69,28 @@
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
                     <com.contrarywind.view.WheelView
-                        android:id="@+id/wv_year"
+                        android:layout_gravity="center"
+                        android:id="@+id/wv_min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        />
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
                     <com.contrarywind.view.WheelView
-                        android:id="@+id/wv_month"
+                        android:layout_gravity="center"
+                        android:id="@+id/wv_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        />
                 </FrameLayout>
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <com.contrarywind.view.WheelView
-                        android:id="@+id/wv_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </FrameLayout>
 
             </LinearLayout>
         </LinearLayout>

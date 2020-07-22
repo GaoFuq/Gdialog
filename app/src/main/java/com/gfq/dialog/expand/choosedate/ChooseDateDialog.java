@@ -20,22 +20,28 @@ import java.util.Locale;
 
 public class ChooseDateDialog {
     private Context context;
-    private DialogType dialogType;
-    private DateType dateType;
+    private DialogType dialogType=DialogType.normal;
+    private DateType dateType=DateType.year_month_day;
 
     private int wvTextColor = Color.parseColor("#999999");
     private int wvTextColorCenter = Color.parseColor("#333333");
     private int wvTextSize = 16;
 
+    public ChooseDateDialog(Context context) {
+        this.context = context;
+        initData();
+        initDialog();
+    }
+
     public ChooseDateDialog(Context context, DialogType dialogType, DateType dateType) {
         this.context = context;
         this.dialogType = dialogType;
         this.dateType = dateType;
-        initDateDialogData();
-        initChooseDateDialog();
+        initData();
+        initDialog();
     }
 
-    private GDialog<DialogChooseDateBinding> chooseDateDialog;
+    private GDialog<DialogChooseDateBinding> dialog;
     private DialogChooseDateBinding binding;
     private WheelAdapter<Integer> yearAdapter;
     private WheelAdapter<Integer> monthAdapter;
@@ -47,7 +53,7 @@ public class ChooseDateDialog {
     private String month = "";
     private String day = "";
 
-    private void initDateDialogData() {
+    private void initData() {
         yearList = new ArrayList<>();
         monthList = new ArrayList<>();
         dayList = new ArrayList<>();
@@ -111,17 +117,17 @@ public class ChooseDateDialog {
         };
     }
 
-    private void initChooseDateDialog() {
+    private void initDialog() {
         if (context != null) {
-            if (chooseDateDialog == null) {
+            if (dialog == null) {
                 if (dialogType == DialogType.normal) {
-                    chooseDateDialog = new BaseRoundDialog<>(context);
+                    dialog = new BaseRoundDialog<>(context);
                 } else if (dialogType == DialogType.bottom) {
-                    chooseDateDialog = new BaseBottomRoundDialog<>(context);
+                    dialog = new BaseBottomRoundDialog<>(context);
                 }
 
-                assert chooseDateDialog != null;
-                binding = chooseDateDialog.bindView(R.layout.dialog_choose_date);
+                assert dialog != null;
+                binding = dialog.bindView(R.layout.dialog_choose_date);
 
                 WheelView wvYear = binding.wvYear;
                 WheelView wvMonth = binding.wvMonth;
@@ -144,15 +150,17 @@ public class ChooseDateDialog {
                 int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
 
                 wvDay.setCurrentItem(d - 1);
+
                 setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
+                setLineHeight(3);
 
                 wvYear.setOnItemSelectedListener(index -> year = (int) wvYear.getAdapter().getItem(index) + "");
                 wvMonth.setOnItemSelectedListener(index -> month = (int) wvMonth.getAdapter().getItem(index) + "");
                 wvDay.setOnItemSelectedListener(index -> day = (int) wvDay.getAdapter().getItem(index) + "");
 
-                binding.tvCancel.setOnClickListener(v -> chooseDateDialog.dismiss());
+                binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
                 binding.tvConfirm.setOnClickListener(v -> {
-                    chooseDateDialog.dismiss();
+                    dialog.dismiss();
                     if (year.equals("")) {
                         year = yearAdapter.getItem(0) + "";
                     }
@@ -230,8 +238,8 @@ public class ChooseDateDialog {
 
     }
     public void show() {
-        if (chooseDateDialog != null) {
-            chooseDateDialog.show();
+        if (dialog != null) {
+            dialog.show();
         }
     }
 
