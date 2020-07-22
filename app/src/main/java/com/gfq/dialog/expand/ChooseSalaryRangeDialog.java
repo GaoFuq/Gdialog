@@ -68,46 +68,14 @@ public class ChooseSalaryRangeDialog {
             maxSalaryList = new ArrayList<>();
         }
 
-        for (int i = minSalary; i < maxSalary+1; i++) {
+        for (int i = minSalary; i < maxSalary + 1; i++) {
             minSalaryList.add(i);
         }
 
-        for (int i = selectedMinSalary; i < maxSalary+1; i++) {
+        for (int i = selectedMinSalary; i < maxSalary + 1; i++) {
             maxSalaryList.add(i);
         }
 
-//        wvMinAdapter = new WheelAdapter<String>() {
-//            @Override
-//            public int getItemsCount() {
-//                return minSalaryList.size();
-//            }
-//
-//            @Override
-//            public String getItem(int index) {
-//                return minSalaryList.get(index) + label;
-//            }
-//
-//            @Override
-//            public int indexOf(String o) {
-//                return minSalaryList.indexOf(o);
-//            }
-//        };
-//        wvMaxAdapter = new WheelAdapter<String>() {
-//            @Override
-//            public int getItemsCount() {
-//                return maxSalaryList.size();
-//            }
-//
-//            @Override
-//            public String getItem(int index) {
-//                return maxSalaryList.get(index) + label;
-//            }
-//
-//            @Override
-//            public int indexOf(String o) {
-//                return maxSalaryList.indexOf(o);
-//            }
-//        };
         wvMinAdapter = new SalaryAdapter(minSalaryList);
         wvMaxAdapter = new SalaryAdapter(maxSalaryList);
 
@@ -144,10 +112,16 @@ public class ChooseSalaryRangeDialog {
                     public void onItemSelected(int index) {
                         selectedMinSalary = minSalaryList.get(index);
                         maxSalaryList.clear();
-                        for (int i = selectedMinSalary; i < maxSalary; i++) {
+                        if (selectedMinSalary == maxSalary) {
+                            maxSalaryList.add(selectedMinSalary);
+                            binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
+                            return;
+                        }
+                        for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
                             maxSalaryList.add(i);
                         }
                         binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
+                        binding.wvMax.setCurrentItem(0);
                     }
                 });
                 binding.wvMax.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -232,7 +206,7 @@ public class ChooseSalaryRangeDialog {
         this.onConfirmListener = onConfirmListener;
     }
 
-    class SalaryAdapter implements WheelAdapter<String> {
+    static class SalaryAdapter implements WheelAdapter<String> {
 
         private List<Integer> list;
 
@@ -247,7 +221,7 @@ public class ChooseSalaryRangeDialog {
 
         @Override
         public String getItem(int index) {
-            return list.get(index) + label;
+            return list.get(index) + "";
         }
 
         @Override
