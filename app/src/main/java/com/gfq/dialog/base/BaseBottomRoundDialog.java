@@ -1,6 +1,7 @@
 package com.gfq.dialog.base;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -62,4 +63,7 @@ public class BaseBottomRoundDialog<T extends ViewDataBinding> extends FrameLayou
         dialog.setCanceledOnTouchOutside(boo);
     }
 
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener){
+        dialog.setOnDismissListener(listener);
+    }
 }

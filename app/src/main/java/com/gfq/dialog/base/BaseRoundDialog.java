@@ -2,6 +2,7 @@ package com.gfq.dialog.base;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -88,7 +89,9 @@ public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
         roundDialog.setCanceledOnTouchOutside(boo);
     }
 
-
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener){
+        roundDialog.setOnDismissListener(listener);
+    }
 }
 
 
