@@ -127,6 +127,7 @@ public class ChooseDateDialog {
 
                         @Override
                         protected void bindView(DialogChooseDateBinding dialogBinding) {
+                            binding=dialogBinding;
                             bindDialogView();
                         }
                     };
@@ -139,6 +140,7 @@ public class ChooseDateDialog {
 
                         @Override
                         protected void bindView(DialogChooseDateBinding dialogBinding) {
+                            binding=dialogBinding;
                             bindDialogView();
                         }
                     };
@@ -263,6 +265,12 @@ public class ChooseDateDialog {
             dialog.show();
         }
     }
+      public void dismiss() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
 
     public interface OnChooseDateConfirmListener {
         void onConfirm(String year, String month, String day);

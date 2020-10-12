@@ -103,4 +103,11 @@ public abstract class BottomChooseDialog<T> {
     protected abstract void onConfirmClicked(T content);
 
 
+    public void show(){
+        dialog.show();
+    }
+
+    public void dismiss(){
+        dialog.dismiss();
+    }
 }
