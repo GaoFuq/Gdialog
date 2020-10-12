@@ -92,7 +92,8 @@ public class ChooseSalaryRangeDialog {
 
                         @Override
                         protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
-                            bindDialogView(dialogBinding);
+                            binding=dialogBinding;
+                            bindDialogView();
                         }
                     };
                 } else if (dialogType == DialogType.bottom) {
@@ -104,7 +105,8 @@ public class ChooseSalaryRangeDialog {
 
                         @Override
                         protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
-                                bindDialogView(dialogBinding);
+                            binding=dialogBinding;
+                            bindDialogView();
                         }
                     };
                 }
@@ -114,7 +116,7 @@ public class ChooseSalaryRangeDialog {
         }
     }
 
-    private void bindDialogView(DialogChooseSalaryRangeBinding dialogBinding) {
+    private void bindDialogView() {
 
         binding.wvMin.setAdapter(wvMinAdapter);
         binding.wvMax.setAdapter(wvMaxAdapter);
