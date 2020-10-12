@@ -9,11 +9,6 @@ import android.content.res.Resources;
  */
 public class DensityUtil {
 
-    float density;
-
-    public DensityUtil() {
-        density = Resources.getSystem().getDisplayMetrics().density;
-    }
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)

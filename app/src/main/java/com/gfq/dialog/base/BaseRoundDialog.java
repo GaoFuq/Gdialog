@@ -1,5 +1,6 @@
 package com.gfq.dialog.base;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,13 +11,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import com.gfq.dialog.R;
+import com.gfq.dialog.util.DensityUtil;
+
 import androidx.annotation.LayoutRes;
 import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-
-import com.gfq.dialog.R;
-import com.gfq.dialog.util.DensityUtil;
 
 
 /**
@@ -24,8 +25,7 @@ import com.gfq.dialog.util.DensityUtil;
  * on {2019/10/15} {17:22}
  * desctapion:
  */
-public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
-    protected T dialogBinding;
+public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDialog{
     private Context context;
     private View view;
     private AlertDialog roundDialog;
@@ -40,6 +40,7 @@ public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
         init();
     }
 
+    @SuppressLint("InflateParams")
     private void findViews() {
         view = LayoutInflater.from(context).inflate(R.layout.base_dialog_round, null);
         cardView = view.findViewById(R.id.cardView);
@@ -54,28 +55,29 @@ public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+        T dialogBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
+        container.addView(dialogBinding.getRoot());
+        bindView(dialogBinding);
     }
+
+    protected abstract @LayoutRes int layout();
+
+    protected abstract void bindView(T dialogBinding);
+
 
     public void setCornerRadius(float radius) {
         cardView.setRadius(DensityUtil.dp2px(radius));
     }
 
-
     @Override
-    public T bindView(int layout) {
-        dialogBinding = DataBindingUtil.inflate(layoutInflater, layout, null, false);
-        container.addView(dialogBinding.getRoot());
-        return dialogBinding;
-    }
-
     public void show() {
         roundDialog.show();
     }
 
+    @Override
     public void dismiss() {
         roundDialog.dismiss();
     }
-
 
     public boolean isShowing() {
         return roundDialog.isShowing();
@@ -92,6 +94,8 @@ public class BaseRoundDialog<T extends ViewDataBinding> implements GDialog<T> {
     public void setOnDismissListener(DialogInterface.OnDismissListener listener){
         roundDialog.setOnDismissListener(listener);
     }
+
+
 }
 
 

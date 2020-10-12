@@ -10,10 +10,7 @@ import com.gfq.dialog.base.BaseBottomRoundDialog;
 import com.gfq.dialog.base.BaseRoundDialog;
 import com.gfq.dialog.base.DialogType;
 import com.gfq.dialog.base.GDialog;
-import com.gfq.dialog.databinding.DialogChooseDateBinding;
 import com.gfq.dialog.databinding.DialogChooseSalaryRangeBinding;
-import com.gfq.dialog.expand.choosedate.ChooseDateDialog;
-import com.gfq.dialog.expand.choosedate.DateType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +30,7 @@ public class ChooseSalaryRangeDialog {
     private int wvTextColor = Color.parseColor("#999999");
     private int wvTextColorCenter = Color.parseColor("#333333");
     private int wvTextSize = 16;
-    private GDialog<DialogChooseSalaryRangeBinding> dialog;
+    private GDialog dialog;
     private DialogChooseSalaryRangeBinding binding;
     private WheelAdapter<String> wvMinAdapter;
     private WheelAdapter<String> wvMaxAdapter;
@@ -87,62 +84,84 @@ public class ChooseSalaryRangeDialog {
         if (context != null) {
             if (dialog == null) {
                 if (dialogType == DialogType.normal) {
-                    dialog = new BaseRoundDialog<>(context);
+                    dialog = new BaseRoundDialog<DialogChooseSalaryRangeBinding>(context) {
+                        @Override
+                        protected int layout() {
+                            return R.layout.dialog_choose_salary_range;
+                        }
+
+                        @Override
+                        protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
+                            bindDialogView(dialogBinding);
+                        }
+                    };
                 } else if (dialogType == DialogType.bottom) {
-                    dialog = new BaseBottomRoundDialog<>(context);
+                    dialog = new BaseBottomRoundDialog<DialogChooseSalaryRangeBinding>(context) {
+                        @Override
+                        protected int layout() {
+                            return R.layout.dialog_choose_salary_range;
+                        }
+
+                        @Override
+                        protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
+                                bindDialogView(dialogBinding);
+                        }
+                    };
                 }
 
-                assert dialog != null;
-                binding = dialog.bindView(R.layout.dialog_choose_salary_range);
 
-                binding.wvMin.setAdapter(wvMinAdapter);
-                binding.wvMax.setAdapter(wvMaxAdapter);
-
-                binding.wvMin.setCyclic(false);
-                binding.wvMax.setCyclic(false);
-                binding.wvMin.setCurrentItem(0);
-                binding.wvMax.setCurrentItem(0);
-
-                setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
-                setLineHeight(3);
-                isCenterLabel(false);
-
-                binding.wvMin.setOnItemSelectedListener(new OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        selectedMinSalary = minSalaryList.get(index);
-                        maxSalaryList.clear();
-                        if (selectedMinSalary == maxSalary) {
-                            maxSalaryList.add(selectedMinSalary);
-                            binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
-                            return;
-                        }
-                        if(selectedMinSalary>=selectedMaxSalary)
-                            for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
-                                maxSalaryList.add(i);
-                            }
-                        binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
-                        binding.wvMax.setCurrentItem(0);
-
-                    }
-                });
-                binding.wvMax.setOnItemSelectedListener(new OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        selectedMaxSalary = maxSalaryList.get(index);
-                    }
-                });
-
-                binding.tvConfirm.setOnClickListener(v -> {
-                    if (onConfirmListener != null) {
-                        onConfirmListener.onConfirm(selectedMinSalary + label, selectedMaxSalary + label);
-                    }
-                    dialog.dismiss();
-                });
-
-                binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
             }
         }
+    }
+
+    private void bindDialogView(DialogChooseSalaryRangeBinding dialogBinding) {
+
+        binding.wvMin.setAdapter(wvMinAdapter);
+        binding.wvMax.setAdapter(wvMaxAdapter);
+
+        binding.wvMin.setCyclic(false);
+        binding.wvMax.setCyclic(false);
+        binding.wvMin.setCurrentItem(0);
+        binding.wvMax.setCurrentItem(0);
+
+        setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
+        setLineHeight(3);
+        isCenterLabel(false);
+
+        binding.wvMin.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                selectedMinSalary = minSalaryList.get(index);
+                maxSalaryList.clear();
+                if (selectedMinSalary == maxSalary) {
+                    maxSalaryList.add(selectedMinSalary);
+                    binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
+                    return;
+                }
+                if(selectedMinSalary>=selectedMaxSalary)
+                    for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
+                        maxSalaryList.add(i);
+                    }
+                binding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
+                binding.wvMax.setCurrentItem(0);
+
+            }
+        });
+        binding.wvMax.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                selectedMaxSalary = maxSalaryList.get(index);
+            }
+        });
+
+        binding.tvConfirm.setOnClickListener(v -> {
+            if (onConfirmListener != null) {
+                onConfirmListener.onConfirm(selectedMinSalary + label, selectedMaxSalary + label);
+            }
+            dialog.dismiss();
+        });
+
+        binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
 

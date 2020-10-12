@@ -5,14 +5,12 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.contrarywind.adapter.WheelAdapter;
-import com.contrarywind.view.WheelView;
 import com.gfq.dialog.R;
 import com.gfq.dialog.base.BaseBottomRoundDialog;
 import com.gfq.dialog.base.BaseRoundDialog;
 import com.gfq.dialog.base.DialogType;
 import com.gfq.dialog.base.GDialog;
 import com.gfq.dialog.databinding.DialogChooseDateBinding;
-import com.gfq.dialog.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +39,7 @@ public class ChooseDateDialog {
         initDialog();
     }
 
-    private GDialog<DialogChooseDateBinding> dialog;
+    private GDialog dialog;
     private DialogChooseDateBinding binding;
     private WheelAdapter<Integer> yearAdapter;
     private WheelAdapter<Integer> monthAdapter;
@@ -121,67 +119,90 @@ public class ChooseDateDialog {
         if (context != null) {
             if (dialog == null) {
                 if (dialogType == DialogType.normal) {
-                    dialog = new BaseRoundDialog<>(context);
+                    dialog = new BaseRoundDialog<DialogChooseDateBinding>(context) {
+                        @Override
+                        protected int layout() {
+                            return R.layout.dialog_choose_date;
+                        }
+
+                        @Override
+                        protected void bindView(DialogChooseDateBinding dialogBinding) {
+                            bindDialogView();
+                        }
+                    };
                 } else if (dialogType == DialogType.bottom) {
-                    dialog = new BaseBottomRoundDialog<>(context);
+                    dialog = new BaseBottomRoundDialog<DialogChooseDateBinding>(context) {
+                        @Override
+                        protected int layout() {
+                            return R.layout.dialog_choose_date;
+                        }
+
+                        @Override
+                        protected void bindView(DialogChooseDateBinding dialogBinding) {
+                            bindDialogView();
+                        }
+                    };
                 }
 
-                assert dialog != null;
-                binding = dialog.bindView(R.layout.dialog_choose_date);
 
-                //默认-年月日-都有
-                if (dateType == DateType.year_month) {
-                    binding.llDay.setVisibility(View.GONE);
-                } else if (dateType == DateType.month_day) {
-                    binding.llYear.setVisibility(View.GONE);
-                }
-                binding.wvYear.setAdapter(yearAdapter);
-                binding.wvMonth.setAdapter(monthAdapter);
-                binding.wvDay.setAdapter(dayAdapter);
-
-                binding.wvYear.setCyclic(false);
-                binding.wvMonth.setCyclic(false);
-                binding.wvYear.setCurrentItem(0);
-
-                int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
-                binding.wvMonth.setCurrentItem(m);
-                int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
-
-                binding.wvDay.setCurrentItem(d - 1);
-
-                setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
-                setLineHeight(3);
-                isCenterLabel(false);
-
-
-                binding.wvYear.setOnItemSelectedListener(index -> year = (int) binding.wvYear.getAdapter().getItem(index) + "");
-                binding.wvMonth.setOnItemSelectedListener(index -> month = (int) binding.wvMonth.getAdapter().getItem(index) + "");
-                binding.wvDay.setOnItemSelectedListener(index -> day = (int) binding.wvDay.getAdapter().getItem(index) + "");
-
-                binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
-                binding.tvConfirm.setOnClickListener(v -> {
-                    dialog.dismiss();
-                    if (year.equals("")) {
-                        year = yearAdapter.getItem(0) + "";
-                    }
-                    if (month.equals("")) {
-                        month = monthAdapter.getItem(m) + "";
-                    }
-                    if (day.equals("")) {
-                        day = dayAdapter.getItem(d - 1) + "";
-                    }
-                    if (month.length() == 1 && Integer.parseInt(month) < 10) {
-                        month = "0" + month;
-                    }
-                    if (day.length() == 1 && Integer.parseInt(day) < 10) {
-                        day = "0" + day;
-                    }
-                    if (onChooseDateConfirmListener != null) {
-                        onChooseDateConfirmListener.onConfirm(year, month, day);
-                    }
-                });
             }
         }
+    }
+
+
+    private void bindDialogView(){
+
+        //默认-年月日-都有
+        if (dateType == DateType.year_month) {
+            binding.llDay.setVisibility(View.GONE);
+        } else if (dateType == DateType.month_day) {
+            binding.llYear.setVisibility(View.GONE);
+        }
+        binding.wvYear.setAdapter(yearAdapter);
+        binding.wvMonth.setAdapter(monthAdapter);
+        binding.wvDay.setAdapter(dayAdapter);
+
+        binding.wvYear.setCyclic(false);
+        binding.wvMonth.setCyclic(false);
+        binding.wvYear.setCurrentItem(0);
+
+        int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
+        binding.wvMonth.setCurrentItem(m);
+        int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
+
+        binding.wvDay.setCurrentItem(d - 1);
+
+        setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
+        setLineHeight(3);
+        isCenterLabel(false);
+
+
+        binding.wvYear.setOnItemSelectedListener(index -> year = (int) binding.wvYear.getAdapter().getItem(index) + "");
+        binding.wvMonth.setOnItemSelectedListener(index -> month = (int) binding.wvMonth.getAdapter().getItem(index) + "");
+        binding.wvDay.setOnItemSelectedListener(index -> day = (int) binding.wvDay.getAdapter().getItem(index) + "");
+
+        binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
+        binding.tvConfirm.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (year.equals("")) {
+                year = yearAdapter.getItem(0) + "";
+            }
+            if (month.equals("")) {
+                month = monthAdapter.getItem(m) + "";
+            }
+            if (day.equals("")) {
+                day = dayAdapter.getItem(d - 1) + "";
+            }
+            if (month.length() == 1 && Integer.parseInt(month) < 10) {
+                month = "0" + month;
+            }
+            if (day.length() == 1 && Integer.parseInt(day) < 10) {
+                day = "0" + day;
+            }
+            if (onChooseDateConfirmListener != null) {
+                onChooseDateConfirmListener.onConfirm(year, month, day);
+            }
+        });
     }
 
     private void setWheelViewDefStyle(int textColor, int textColorCenter, int textSize) {

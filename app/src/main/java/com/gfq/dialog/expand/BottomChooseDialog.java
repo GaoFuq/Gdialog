@@ -2,11 +2,6 @@ package com.gfq.dialog.expand;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.View;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 
 
 import com.contrarywind.adapter.WheelAdapter;
@@ -17,29 +12,42 @@ import com.gfq.dialog.databinding.BottomChooseDialogBinding;
 
 import java.util.List;
 
+import androidx.databinding.ViewDataBinding;
+
 /**
  * create by 高富强
  * on {2019/10/17} {15:26}
  * desctapion:
  */
-public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<BottomChooseDialogBinding> {
+public abstract class BottomChooseDialog<T> {
     private List<T> dataList;
     private T content;
+    private BaseBottomRoundDialog<BottomChooseDialogBinding> dialog;
+    private BottomChooseDialogBinding binding;
 
     public BottomChooseDialog(Context context) {
-        super(context);
-        init();
+        dialog = new BaseBottomRoundDialog<BottomChooseDialogBinding>(context) {
+            @Override
+            protected int layout() {
+                return R.layout.bottom_choose_dialog;
+            }
+
+            @Override
+            protected void bindView(BottomChooseDialogBinding dialogBinding) {
+                binding = dialogBinding;
+                init();
+            }
+        };
     }
 
+
     private void init() {
-        dialogBinding = bindView(R.layout.bottom_choose_dialog);
-        dialogBinding.tvTitle.setText(getTitle());
-        dialogBinding.tvCancel.setOnClickListener(v -> dismiss());
-        dialogBinding.tvConfirm.setOnClickListener(v -> {
-            dismiss();
+        binding.tvTitle.setText(getTitle());
+        binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
+        binding.tvConfirm.setOnClickListener(v -> {
+            dialog.dismiss();
             onConfirmClicked(content);
         });
-
         dataList = getDataList();
         content = dataList.get(1);
         WheelAdapter<T> adapter = new WheelAdapter<T>() {
@@ -58,34 +66,34 @@ public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<Bottom
                 return dataList.indexOf(o);
             }
         };
-        dialogBinding.wheelView.setAdapter(adapter);
-        dialogBinding.wheelView.setCurrentItem(0);
-        dialogBinding.wheelView.setCyclic(false);
-        dialogBinding.wheelView.setOnItemSelectedListener(index -> content = dataList.get(index));
-        dialogBinding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
-        dialogBinding.wheelView.setTextColorOut(Color.parseColor("#666666"));
-        dialogBinding.wheelView.setTextSize(14);
-        dialogBinding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
-        dialogBinding.wheelView.setLineSpacingMultiplier(3);
-        dialogBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
+        binding.wheelView.setAdapter(adapter);
+        binding.wheelView.setCurrentItem(0);
+        binding.wheelView.setCyclic(false);
+        binding.wheelView.setOnItemSelectedListener(index -> content = dataList.get(index));
+        binding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
+        binding.wheelView.setTextColorOut(Color.parseColor("#666666"));
+        binding.wheelView.setTextSize(14);
+        binding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
+        binding.wheelView.setLineSpacingMultiplier(3);
+        binding.wheelView.setDividerType(WheelView.DividerType.WRAP);
     }
 
     public void setTitleStyle(String text, int textColor, int textSize) {
-        dialogBinding.tvTitle.setText(text);
-        dialogBinding.tvTitle.setTextColor(textColor);
-        dialogBinding.tvTitle.setTextSize(textSize);
+        binding.tvTitle.setText(text);
+        binding.tvTitle.setTextColor(textColor);
+        binding.tvTitle.setTextSize(textSize);
     }
 
     public void setConfirmStyle(String text, int textColor, int textSize) {
-        dialogBinding.tvConfirm.setText(text);
-        dialogBinding.tvConfirm.setTextColor(textColor);
-        dialogBinding.tvConfirm.setTextSize(textSize);
+        binding.tvConfirm.setText(text);
+        binding.tvConfirm.setTextColor(textColor);
+        binding.tvConfirm.setTextSize(textSize);
     }
 
     public void setCancelStyle(String text, int textColor, int textSize) {
-        dialogBinding.tvCancel.setText(text);
-        dialogBinding.tvCancel.setTextColor(textColor);
-        dialogBinding.tvCancel.setTextSize(textSize);
+        binding.tvCancel.setText(text);
+        binding.tvCancel.setTextColor(textColor);
+        binding.tvCancel.setTextSize(textSize);
     }
 
     protected abstract String getTitle();

@@ -1,10 +1,6 @@
 package com.gfq.dialog.expand.calender;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-
-import androidx.databinding.DataBindingUtil;
 
 import com.gfq.dialog.R;
 import com.gfq.dialog.base.BaseBottomRoundDialog;
@@ -21,8 +17,8 @@ import java.util.Map;
  * desctapion:
  */
 public class BottomCalenderDialog {
-    private BottomCalenderBinding binding;
     private BaseBottomRoundDialog<BottomCalenderBinding> dialog;
+    private BottomCalenderBinding binding;
     private Map<String, Calendar> map;
     private int year;
     private int month;
@@ -30,15 +26,28 @@ public class BottomCalenderDialog {
 
 
     public BottomCalenderDialog(Context context) {
-
         init(context);
     }
 
 
     private void init(Context context) {
         map = new HashMap<>();
-        dialog = new BaseBottomRoundDialog<>(context);
-        binding = dialog.bindView(R.layout.bottom_calender);
+        dialog = new BaseBottomRoundDialog<BottomCalenderBinding>(context) {
+            @Override
+            protected int layout() {
+                return R.layout.bottom_calender;
+            }
+
+            @Override
+            protected void bindView(BottomCalenderBinding calenderBinding) {
+                binding = calenderBinding;
+                bindDialogView();
+            }
+        };
+
+    }
+
+    private void bindDialogView() {
         year = binding.calendarView.getCurYear();
         month = binding.calendarView.getCurMonth();
         binding.tvYear.setText(year + "");
@@ -57,17 +66,11 @@ public class BottomCalenderDialog {
                 month = calendar.getMonth();
                 binding.tvYear.setText(year + "");
                 binding.tvMonth.setText(month + "");
-//                Toast.makeText(context, calendar.getDay()+"", Toast.LENGTH_SHORT).show();
                 if (onCalenderSelectListener != null) {
                     onCalenderSelectListener.onCalenderSelected(year + "", month + "", calendar.getDay() + "");
                 }
             }
         });
-
-        onclick();
-    }
-
-    private void onclick() {
         binding.ivLeftBackOne.setOnClickListener(v -> binding.calendarView.scrollToPre(true));
         binding.ivRightBackOne.setOnClickListener(v -> binding.calendarView.scrollToNext(true));
 
@@ -87,6 +90,7 @@ public class BottomCalenderDialog {
             int month = Integer.parseInt(tempMonth);
             binding.calendarView.scrollToCalendar(year, month, 1, true);
         });
+
     }
 
 
