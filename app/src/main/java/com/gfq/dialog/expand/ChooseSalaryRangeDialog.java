@@ -217,6 +217,10 @@ public class ChooseSalaryRangeDialog {
     }
 
 
+    public void dismiss(){
+        dialog.dismiss();
+    }
+
     public interface OnConfirmListener {
         void onConfirm(String minSalary, String maxSalary);
     }

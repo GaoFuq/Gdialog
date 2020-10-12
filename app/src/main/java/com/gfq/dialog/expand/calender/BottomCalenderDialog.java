@@ -117,4 +117,12 @@ public class BottomCalenderDialog {
     public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
     }
+
+    public void show(){
+        dialog.show();
+    }
+
+    public void dismiss(){
+        dialog.dismiss();
+    }
 }
