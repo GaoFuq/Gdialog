@@ -40,7 +40,6 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implemen
         dialog = new BottomSheetDialog(context);
         dialog.setContentView(view);
         dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
-        dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(true);
 
         dialogBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
@@ -66,6 +65,10 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implemen
 
     public void setCanceledOnTouchOutside(boolean boo) {
         dialog.setCanceledOnTouchOutside(boo);
+    }
+    
+    public void setCanHideWhenSwipDown(boolean boo){
+        dialog.setCancelable(boo);
     }
 
     public void setOnDismissListener(DialogInterface.OnDismissListener listener){
