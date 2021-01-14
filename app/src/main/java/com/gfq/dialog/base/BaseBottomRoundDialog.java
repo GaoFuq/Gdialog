@@ -18,7 +18,7 @@ import androidx.databinding.ViewDataBinding;
  * on {2019/10/17} {10:05}
  * desctapion:
  */
-public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implements GDialog{
+public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implements GDialog {
     private final LayoutInflater layoutInflater;
     protected T dialogBinding;
     private BottomSheetDialog dialog;
@@ -32,7 +32,6 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implemen
     }
 
 
-
     private void initBase() {
         View view = LayoutInflater.from(context).inflate(R.layout.base_bottom_round_dialog, null);
 
@@ -43,13 +42,17 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implemen
         dialog.setCanceledOnTouchOutside(true);
 
         dialogBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-        container.addView(dialogBinding.getRoot());
-
-        bindView(dialogBinding);
+        if (dialogBinding == null) {
+            throw new RuntimeException("dialogBinding == null");
+        } else {
+            container.addView(dialogBinding.getRoot());
+            bindView(dialogBinding);
+        }
     }
 
 
-    protected abstract @LayoutRes int layout();
+    protected abstract @LayoutRes
+    int layout();
 
     protected abstract void bindView(T dialogBinding);
 
@@ -66,12 +69,12 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding>  implemen
     public void setCanceledOnTouchOutside(boolean boo) {
         dialog.setCanceledOnTouchOutside(boo);
     }
-    
-    public void setCanHideWhenSwipDown(boolean boo){
+
+    public void setCanHideWhenSwipDown(boolean boo) {
         dialog.setCancelable(boo);
     }
 
-    public void setOnDismissListener(DialogInterface.OnDismissListener listener){
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
         dialog.setOnDismissListener(listener);
     }
 
