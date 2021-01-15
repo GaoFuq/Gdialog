@@ -9,7 +9,6 @@ import androidx.databinding.ViewDataBinding;
  * @Descaption
  */
 public interface GDialog{
-//     T bindView(@LayoutRes int layout);
      void show();
      void dismiss();
 }

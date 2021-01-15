@@ -91,8 +91,8 @@ public class ChooseSalaryRangeDialog {
                         }
 
                         @Override
-                        protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
-                            binding=dialogBinding;
+                        protected void bindView() {
+                            binding=dgBinding;
                             bindDialogView();
                         }
                     };
@@ -104,8 +104,8 @@ public class ChooseSalaryRangeDialog {
                         }
 
                         @Override
-                        protected void bindView(DialogChooseSalaryRangeBinding dialogBinding) {
-                            binding=dialogBinding;
+                        protected void bindView() {
+                            binding =dgBinding;
                             bindDialogView();
                         }
                     };

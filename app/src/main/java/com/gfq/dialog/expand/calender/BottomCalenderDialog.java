@@ -39,9 +39,9 @@ public class BottomCalenderDialog {
             }
 
             @Override
-            protected void bindView(BottomCalenderBinding calenderBinding) {
-                binding = calenderBinding;
+            protected void bindView() {
                 bindDialogView();
+                binding = dgBinding;
             }
         };
 

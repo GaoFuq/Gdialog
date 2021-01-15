@@ -12,8 +12,6 @@ import com.gfq.dialog.databinding.BottomChooseDialogBinding;
 
 import java.util.List;
 
-import androidx.databinding.ViewDataBinding;
-
 /**
  * create by 高富强
  * on {2019/10/17} {15:26}
@@ -33,8 +31,8 @@ public abstract class BottomChooseDialog<T> {
             }
 
             @Override
-            protected void bindView(BottomChooseDialogBinding dialogBinding) {
-                binding = dialogBinding;
+            protected void bindView() {
+                binding = dgBinding;
                 init();
             }
         };

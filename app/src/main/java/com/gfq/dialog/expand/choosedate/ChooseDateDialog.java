@@ -126,8 +126,8 @@ public class ChooseDateDialog {
                         }
 
                         @Override
-                        protected void bindView(DialogChooseDateBinding dialogBinding) {
-                            binding=dialogBinding;
+                        protected void bindView() {
+                            binding=dgBinding;
                             bindDialogView();
                         }
                     };
@@ -139,8 +139,8 @@ public class ChooseDateDialog {
                         }
 
                         @Override
-                        protected void bindView(DialogChooseDateBinding dialogBinding) {
-                            binding=dialogBinding;
+                        protected void bindView() {
+                            binding=dgBinding;
                             bindDialogView();
                         }
                     };

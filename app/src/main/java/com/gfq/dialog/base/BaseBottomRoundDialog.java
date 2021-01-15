@@ -13,6 +13,8 @@ import androidx.annotation.LayoutRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * create by 高富强
  * on {2019/10/17} {10:05}
@@ -20,17 +22,25 @@ import androidx.databinding.ViewDataBinding;
  */
 public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implements GDialog {
     private final LayoutInflater layoutInflater;
-    protected T dialogBinding;
+    protected T dgBinding;
     private BottomSheetDialog dialog;
-    protected Context context;
+    protected final Context context;
     private FrameLayout container;
 
-    public BaseBottomRoundDialog(Context context) {
+    public BaseBottomRoundDialog(@NotNull Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         initBase();
     }
 
+
+    public FrameLayout getContainer() {
+        return container;
+    }
+
+    public BottomSheetDialog getDialog() {
+        return dialog;
+    }
 
     private void initBase() {
         View view = LayoutInflater.from(context).inflate(R.layout.base_bottom_round_dialog, null);
@@ -41,20 +51,17 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implement
         dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         dialog.setCanceledOnTouchOutside(true);
 
-        dialogBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-        if (dialogBinding == null) {
-            throw new RuntimeException("dialogBinding == null");
-        } else {
-            container.addView(dialogBinding.getRoot());
-            bindView(dialogBinding);
-        }
+        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
+        container.addView(dgBinding.getRoot());
+        bindView();
+
     }
 
 
     protected abstract @LayoutRes
     int layout();
 
-    protected abstract void bindView(T dialogBinding);
+    protected abstract void bindView();
 
     @Override
     public void show() {
@@ -70,7 +77,7 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implement
         dialog.setCanceledOnTouchOutside(boo);
     }
 
-    public void setCanHideWhenSwipDown(boolean boo) {
+    public void setCanHideWhenSwipeDown(boolean boo) {
         dialog.setCancelable(boo);
     }
 
@@ -78,7 +85,4 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implement
         dialog.setOnDismissListener(listener);
     }
 
-    public T getDialogBinding() {
-        return dialogBinding;
-    }
 }

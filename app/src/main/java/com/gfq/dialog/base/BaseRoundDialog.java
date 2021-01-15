@@ -32,6 +32,7 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
     private CardView cardView;
     private FrameLayout container;
     private LayoutInflater layoutInflater;
+    protected T dgBinding;
 
     public BaseRoundDialog(Context context) {
         this.context = context;
@@ -55,14 +56,14 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-        T dialogBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-        container.addView(dialogBinding.getRoot());
-        bindView(dialogBinding);
+        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
+        container.addView(dgBinding.getRoot());
+        bindView();
     }
 
     protected abstract @LayoutRes int layout();
 
-    protected abstract void bindView(T dialogBinding);
+    protected abstract void bindView();
 
 
     public void setCornerRadius(float radius) {
