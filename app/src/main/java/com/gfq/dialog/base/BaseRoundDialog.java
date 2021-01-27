@@ -27,37 +27,28 @@ import androidx.databinding.ViewDataBinding;
  */
 public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDialog{
     private Context context;
-    private View view;
-    private AlertDialog roundDialog;
-    private CardView cardView;
-    private FrameLayout container;
+    private AlertDialog dialog;
     private LayoutInflater layoutInflater;
     protected T dgBinding;
 
     public BaseRoundDialog(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        findViews();
         init();
     }
 
-    @SuppressLint("InflateParams")
-    private void findViews() {
-        view = LayoutInflater.from(context).inflate(R.layout.base_dialog_round, null);
-        cardView = view.findViewById(R.id.cardView);
-        container = view.findViewById(R.id.container);
-    }
 
 
     private void init() {
-        roundDialog = new AlertDialog.Builder(context).create();
-        roundDialog.setView(view);
-        Window window = roundDialog.getWindow();
+        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
+        dialog = new AlertDialog.Builder(context).create();
+        dialog.setView(dgBinding.getRoot());
+        Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-        container.addView(dgBinding.getRoot());
+//        dialog.setView(dgBinding.getRoot(), marginLeft, marginTop, marginRight, marginBottom);
+
         bindView();
     }
 
@@ -66,34 +57,31 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
     protected abstract void bindView();
 
 
-    public void setCornerRadius(float radius) {
-        cardView.setRadius(DensityUtil.dp2px(radius));
-    }
 
     @Override
     public void show() {
-        roundDialog.show();
+        dialog.show();
     }
 
     @Override
     public void dismiss() {
-        roundDialog.dismiss();
+        dialog.dismiss();
     }
 
     public boolean isShowing() {
-        return roundDialog.isShowing();
+        return dialog.isShowing();
     }
 
     public AlertDialog getAlert() {
-        return roundDialog;
+        return dialog;
     }
 
     public void setCanceledOnTouchOutside(boolean boo) {
-        roundDialog.setCanceledOnTouchOutside(boo);
+        dialog.setCanceledOnTouchOutside(boo);
     }
 
     public void setOnDismissListener(DialogInterface.OnDismissListener listener){
-        roundDialog.setOnDismissListener(listener);
+        dialog.setOnDismissListener(listener);
     }
 
 
