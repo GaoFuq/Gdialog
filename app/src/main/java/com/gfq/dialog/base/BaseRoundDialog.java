@@ -35,6 +35,9 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
     private LayoutInflater layoutInflater;
     protected T dgBinding;
     private int backgroundColor = Color.WHITE;
+    private Drawable backgroundDrawable;
+    private @DrawableRes
+    int backgroundDrawableResource;
     private int gravity = Gravity.CENTER;
     private int horizontalMargin = 0;
     private int verticalMargin = 0;
@@ -152,14 +155,19 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
         setRadiusOrBackgroundColor();
     }
 
-    public void setBackgroundDrawable(Drawable drawable){
+    public void setBackgroundDrawable(Drawable drawable) {
+        if (drawable == null) return;
+        this.backgroundDrawable = drawable;
         if (window != null) {
             window.setBackgroundDrawable(drawable);
         }
     }
-    public void setBackgroundDrawableResource(@DrawableRes int drawable){
+
+    public void setBackgroundDrawableResource(@DrawableRes int backgroundDrawableResource) {
+        if (backgroundDrawableResource == 0) return;
+        this.backgroundDrawableResource = backgroundDrawableResource;
         if (window != null) {
-            window.setBackgroundDrawableResource(drawable);
+            window.setBackgroundDrawableResource(backgroundDrawableResource);
         }
     }
 
@@ -234,6 +242,14 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
 
     public int getVerticalMargin() {
         return verticalMargin;
+    }
+
+    public Drawable getBackgroundDrawable() {
+        return backgroundDrawable;
+    }
+
+    public int getBackgroundDrawableResource() {
+        return backgroundDrawableResource;
     }
 }
 
