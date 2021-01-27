@@ -8,15 +8,13 @@ import com.contrarywind.adapter.WheelAdapter;
 import com.gfq.dialog.R;
 import com.gfq.dialog.base.BaseBottomRoundDialog;
 import com.gfq.dialog.base.BaseRoundDialog;
-import com.gfq.dialog.base.DialogType;
-import com.gfq.dialog.base.GDialog;
 import com.gfq.dialog.databinding.DialogChooseDateBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ChooseDateDialog extends BaseRoundDialog<DialogChooseDateBinding>{
+public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDateBinding> {
 //    private DateType dateType=DateType.year_month_day;
     private WheelAdapter<Integer> yearAdapter;
     private WheelAdapter<Integer> monthAdapter;
@@ -31,7 +29,7 @@ public class ChooseDateDialog extends BaseRoundDialog<DialogChooseDateBinding>{
     private int wvTextColorCenter = Color.parseColor("#333333");
     private int wvTextSize = 16;
 
-    public ChooseDateDialog(Context context) {
+    public ChooseDateBottomDialog(Context context) {
         super(context);
     }
 
@@ -59,6 +57,7 @@ public class ChooseDateDialog extends BaseRoundDialog<DialogChooseDateBinding>{
             dgBinding.llYear.setVisibility(View.GONE);
         }
     }
+
 
     private void initData() {
         yearList = new ArrayList<>();
@@ -128,6 +127,8 @@ public class ChooseDateDialog extends BaseRoundDialog<DialogChooseDateBinding>{
 
 
     private void bindDialogView(){
+
+        //默认-年月日-都有
 
         dgBinding.wvYear.setAdapter(yearAdapter);
         dgBinding.wvMonth.setAdapter(monthAdapter);

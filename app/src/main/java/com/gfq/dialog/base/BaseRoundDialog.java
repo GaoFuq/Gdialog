@@ -38,7 +38,7 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
     private int gravity = Gravity.CENTER;
     private int horizontalMargin = 0;
     private int verticalMargin = 0;
-    private int radius = DensityUtil.dp2px(10);
+    private int radius = DensityUtil.dp2px(5);
     private float widthPercent = 0.8f;
     private float heightPercent = 0;
 
@@ -157,7 +157,6 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
             window.setBackgroundDrawable(drawable);
         }
     }
-
     public void setBackgroundDrawableResource(@DrawableRes int drawable){
         if (window != null) {
             window.setBackgroundDrawableResource(drawable);
