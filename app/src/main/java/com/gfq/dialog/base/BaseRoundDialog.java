@@ -157,6 +157,7 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
             window.setBackgroundDrawable(drawable);
         }
     }
+
     public void setBackgroundDrawableResource(@DrawableRes int drawable){
         if (window != null) {
             window.setBackgroundDrawableResource(drawable);
