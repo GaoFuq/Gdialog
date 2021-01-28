@@ -28,21 +28,34 @@ import androidx.databinding.ViewDataBinding;
  * on {2019/10/15} {17:22}
  * desctapion:
  */
-public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDialog {
+public abstract class BaseRoundDialog<T extends ViewDataBinding>{
     private Context context;
     private Dialog dialog;
     private Window window;
     private LayoutInflater layoutInflater;
     protected T dgBinding;
-    private int backgroundColor = Color.WHITE;
     private Drawable backgroundDrawable;
     private @DrawableRes
     int backgroundDrawableResource;
     private int gravity = Gravity.CENTER;
     private int horizontalMargin = 0;
     private int verticalMargin = 0;
+    /**
+     * 默认背景色 白色
+     */
+    private int backgroundColor = Color.WHITE;
+
+    /**
+     * 默认圆角 5dp
+     */
     private int radius = DensityUtil.dp2px(5);
+    /**
+     * 默认宽度 = 屏幕宽度 * 0.8
+     */
     private float widthPercent = 0.8f;
+    /**
+     * 默认高度 = 包裹内容
+     */
     private float heightPercent = 0;
 
 
@@ -61,6 +74,8 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
         dialog.setContentView(dgBinding.getRoot());
         dialog.setCanceledOnTouchOutside(true);
 
+
+        //  设置默认样式
         setWidthPercent(0.8f);
         setBackgroundColor(Color.WHITE);
         setRadius(radius);
@@ -189,13 +204,10 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding> implements GDia
         drawable.setTint(color);
         return drawable;
     }
-
-    @Override
     public void show() {
         dialog.show();
     }
 
-    @Override
     public void dismiss() {
         dialog.dismiss();
     }

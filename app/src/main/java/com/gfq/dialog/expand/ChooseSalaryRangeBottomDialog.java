@@ -18,7 +18,7 @@ import java.util.List;
  * @Date 2020/7/22 16:32
  * @Descaption
  */
-public class ChooseSalaryRangeDialog extends BaseRoundDialog<DialogChooseSalaryRangeBinding> {
+public class ChooseSalaryRangeBottomDialog extends BaseBottomRoundDialog<DialogChooseSalaryRangeBinding> {
 
     private Context context;
     private int minSalary = 1;
@@ -35,10 +35,10 @@ public class ChooseSalaryRangeDialog extends BaseRoundDialog<DialogChooseSalaryR
     private int selectedMaxSalary;
 
 
-    public ChooseSalaryRangeDialog(Context context) {
+    public ChooseSalaryRangeBottomDialog(Context context) {
         super(context);
     }
-    public ChooseSalaryRangeDialog(Context context,int minSalary, int maxSalary, String label) {
+    public ChooseSalaryRangeBottomDialog(Context context, int minSalary, int maxSalary, String label) {
         super(context);
         this.context = context;
         this.minSalary = minSalary;
@@ -79,7 +79,7 @@ public class ChooseSalaryRangeDialog extends BaseRoundDialog<DialogChooseSalaryR
     }
 
 
-    
+
 
     private void bindDialogView() {
 
@@ -177,7 +177,7 @@ public class ChooseSalaryRangeDialog extends BaseRoundDialog<DialogChooseSalaryR
         dgBinding.wvMax.setLineSpacingMultiplier(lineHeight);
     }
 
-  
+
 
 
 

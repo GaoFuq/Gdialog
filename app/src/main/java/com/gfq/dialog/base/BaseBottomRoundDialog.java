@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  * on {2019/10/17} {10:05}
  * desctapion:
  */
-public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implements GDialog {
+public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> {
     private final LayoutInflater layoutInflater;
     protected T dgBinding;
     private BottomSheetDialog dialog;
@@ -55,7 +55,11 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implement
 //        dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackground(getDrawable());
         dialog.setCanceledOnTouchOutside(true);
+        beforeBindView();
         bindView();
+    }
+
+    protected void beforeBindView() {
 
     }
 
@@ -73,12 +77,10 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> implement
 
     protected abstract void bindView();
 
-    @Override
     public void show() {
         dialog.show();
     }
 
-    @Override
     public void dismiss() {
         dialog.dismiss();
     }

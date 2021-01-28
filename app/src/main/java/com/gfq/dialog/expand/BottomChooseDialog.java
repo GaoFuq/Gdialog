@@ -10,6 +10,8 @@ import com.gfq.dialog.R;
 import com.gfq.dialog.base.BaseBottomRoundDialog;
 import com.gfq.dialog.databinding.BottomChooseDialogBinding;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -17,33 +19,34 @@ import java.util.List;
  * on {2019/10/17} {15:26}
  * desctapion:
  */
-public abstract class BottomChooseDialog<T> {
-    private List<T> dataList;
+public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<BottomChooseDialogBinding> {
+
     private T content;
-    private BaseBottomRoundDialog<BottomChooseDialogBinding> dialog;
-    private BottomChooseDialogBinding binding;
+    private List<T> dataList;
 
-    public BottomChooseDialog(Context context) {
-        dialog = new BaseBottomRoundDialog<BottomChooseDialogBinding>(context) {
-            @Override
-            protected int layout() {
-                return R.layout.bottom_choose_dialog;
-            }
-
-            @Override
-            protected void bindView() {
-                binding = dgBinding;
-                init();
-            }
-        };
+    public BottomChooseDialog(@NotNull Context context) {
+        super(context);
     }
 
+    public BottomChooseDialog(@NotNull Context context, int radius) {
+        super(context, radius);
+    }
+
+    @Override
+    protected int layout() {
+        return R.layout.bottom_choose_dialog;
+    }
+
+    @Override
+    protected void bindView() {
+        init();
+    }
 
     private void init() {
-        binding.tvTitle.setText(getTitle());
-        binding.tvCancel.setOnClickListener(v -> dialog.dismiss());
-        binding.tvConfirm.setOnClickListener(v -> {
-            dialog.dismiss();
+        dgBinding.tvTitle.setText(getTitle());
+        dgBinding.tvCancel.setOnClickListener(v -> dismiss());
+        dgBinding.tvConfirm.setOnClickListener(v -> {
+            dismiss();
             onConfirmClicked(content);
         });
         dataList = getDataList();
@@ -64,34 +67,34 @@ public abstract class BottomChooseDialog<T> {
                 return dataList.indexOf(o);
             }
         };
-        binding.wheelView.setAdapter(adapter);
-        binding.wheelView.setCurrentItem(0);
-        binding.wheelView.setCyclic(false);
-        binding.wheelView.setOnItemSelectedListener(index -> content = dataList.get(index));
-        binding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
-        binding.wheelView.setTextColorOut(Color.parseColor("#666666"));
-        binding.wheelView.setTextSize(14);
-        binding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
-        binding.wheelView.setLineSpacingMultiplier(3);
-        binding.wheelView.setDividerType(WheelView.DividerType.WRAP);
+        dgBinding.wheelView.setAdapter(adapter);
+        dgBinding.wheelView.setCurrentItem(0);
+        dgBinding.wheelView.setCyclic(false);
+        dgBinding.wheelView.setOnItemSelectedListener(index -> content = dataList.get(index));
+        dgBinding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
+        dgBinding.wheelView.setTextColorOut(Color.parseColor("#666666"));
+        dgBinding.wheelView.setTextSize(14);
+        dgBinding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
+        dgBinding.wheelView.setLineSpacingMultiplier(3);
+        dgBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
     }
 
     public void setTitleStyle(String text, int textColor, int textSize) {
-        binding.tvTitle.setText(text);
-        binding.tvTitle.setTextColor(textColor);
-        binding.tvTitle.setTextSize(textSize);
+        dgBinding.tvTitle.setText(text);
+        dgBinding.tvTitle.setTextColor(textColor);
+        dgBinding.tvTitle.setTextSize(textSize);
     }
 
     public void setConfirmStyle(String text, int textColor, int textSize) {
-        binding.tvConfirm.setText(text);
-        binding.tvConfirm.setTextColor(textColor);
-        binding.tvConfirm.setTextSize(textSize);
+        dgBinding.tvConfirm.setText(text);
+        dgBinding.tvConfirm.setTextColor(textColor);
+        dgBinding.tvConfirm.setTextSize(textSize);
     }
 
     public void setCancelStyle(String text, int textColor, int textSize) {
-        binding.tvCancel.setText(text);
-        binding.tvCancel.setTextColor(textColor);
-        binding.tvCancel.setTextSize(textSize);
+        dgBinding.tvCancel.setText(text);
+        dgBinding.tvCancel.setTextColor(textColor);
+        dgBinding.tvCancel.setTextSize(textSize);
     }
 
     protected abstract String getTitle();
@@ -101,11 +104,4 @@ public abstract class BottomChooseDialog<T> {
     protected abstract void onConfirmClicked(T content);
 
 
-    public void show(){
-        dialog.show();
-    }
-
-    public void dismiss(){
-        dialog.dismiss();
-    }
 }
