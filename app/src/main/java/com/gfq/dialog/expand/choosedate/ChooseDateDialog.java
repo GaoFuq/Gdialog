@@ -37,6 +37,7 @@ public class ChooseDateDialog extends BaseRoundDialog<DialogChooseDateBinding>{
         return R.layout.dialog_choose_date;
     }
 
+
     @Override
     protected void bindView() {
         initData();

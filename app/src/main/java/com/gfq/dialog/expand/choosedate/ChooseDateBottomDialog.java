@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDateBinding> {
-//    private DateType dateType=DateType.year_month_day;
     private WheelAdapter<Integer> yearAdapter;
     private WheelAdapter<Integer> monthAdapter;
     private WheelAdapter<Integer> dayAdapter;
@@ -39,15 +38,21 @@ public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDa
     }
 
     @Override
-    protected void bindView() {
+    protected void beforeBindView() {
+        setCanHideWhenSwipeDown(false);
+        setCanceledOnTouchOutside(true);
         initData();
         setDateType(DateType.year_month_day);
+    }
+
+
+    @Override
+    protected void bindView() {
         bindDialogView();
     }
 
 
-
-    public void setDateType(DateType dateType){
+    public void setDateType(DateType dateType) {
         dgBinding.llYear.setVisibility(View.VISIBLE);
         dgBinding.llDay.setVisibility(View.VISIBLE);
 
@@ -124,9 +129,7 @@ public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDa
     }
 
 
-
-
-    private void bindDialogView(){
+    private void bindDialogView() {
 
         //默认-年月日-都有
 
@@ -144,7 +147,7 @@ public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDa
 
         dgBinding.wvDay.setCurrentItem(d - 1);
 
-        setWheelViewDefStyle(wvTextColor,wvTextColorCenter,wvTextSize);
+        setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
         setLineHeight(3);
         isCenterLabel(false);
 
@@ -195,16 +198,15 @@ public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDa
     }
 
     //是否只显示中间的Label  默认为true
-    public void isCenterLabel(boolean b){
+    public void isCenterLabel(boolean b) {
         dgBinding.wvYear.isCenterLabel(b);
         dgBinding.wvMonth.isCenterLabel(b);
         dgBinding.wvDay.isCenterLabel(b);
     }
 
 
-
     public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
-        setWheelViewDefStyle(textColor,textColorCenter,textSize);
+        setWheelViewDefStyle(textColor, textColorCenter, textSize);
     }
 
     public void setTitleStyle(String text, int textColor, int textSize) {
@@ -224,7 +226,8 @@ public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDa
         dgBinding.tvCancel.setTextColor(textColor);
         dgBinding.tvCancel.setTextSize(textSize);
     }
-    public void setLineHeight(float lineHeight){
+
+    public void setLineHeight(float lineHeight) {
         dgBinding.wvYear.setLineSpacingMultiplier(lineHeight);
         dgBinding.wvMonth.setLineSpacingMultiplier(lineHeight);
         dgBinding.wvDay.setLineSpacingMultiplier(lineHeight);
