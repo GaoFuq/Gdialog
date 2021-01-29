@@ -38,8 +38,8 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> {
     public BaseBottomRoundDialog(@NotNull Context context,int radius) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        initBase();
         this.radius=radius;
+        initBase();
     }
 
 
