@@ -6,7 +6,6 @@ import android.graphics.Color;
 import com.contrarywind.adapter.WheelAdapter;
 import com.contrarywind.listener.OnItemSelectedListener;
 import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseBottomRoundDialog;
 import com.gfq.dialog.base.BaseRoundDialog;
 import com.gfq.dialog.databinding.DialogChooseSalaryRangeBinding;
 

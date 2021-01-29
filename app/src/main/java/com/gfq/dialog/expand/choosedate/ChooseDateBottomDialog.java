@@ -6,15 +6,14 @@ import android.view.View;
 
 import com.contrarywind.adapter.WheelAdapter;
 import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseBottomRoundDialog;
-import com.gfq.dialog.base.BaseRoundDialog;
+import com.gfq.dialog.base.BaseBottomDialog;
 import com.gfq.dialog.databinding.DialogChooseDateBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ChooseDateBottomDialog extends BaseBottomRoundDialog<DialogChooseDateBinding> {
+public class ChooseDateBottomDialog extends BaseBottomDialog<DialogChooseDateBinding> {
     private WheelAdapter<Integer> yearAdapter;
     private WheelAdapter<Integer> monthAdapter;
     private WheelAdapter<Integer> dayAdapter;

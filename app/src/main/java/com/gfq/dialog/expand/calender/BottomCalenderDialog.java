@@ -3,7 +3,7 @@ package com.gfq.dialog.expand.calender;
 import android.content.Context;
 
 import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseBottomRoundDialog;
+import com.gfq.dialog.base.BaseBottomDialog;
 import com.gfq.dialog.databinding.BottomCalenderBinding;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -17,7 +17,7 @@ import java.util.Map;
  * desctapion:
  */
 public class BottomCalenderDialog {
-    private BaseBottomRoundDialog<BottomCalenderBinding> dialog;
+    private BaseBottomDialog<BottomCalenderBinding> dialog;
     private BottomCalenderBinding binding;
     private Map<String, Calendar> map;
     private int year;
@@ -32,7 +32,7 @@ public class BottomCalenderDialog {
 
     private void init(Context context) {
         map = new HashMap<>();
-        dialog = new BaseBottomRoundDialog<BottomCalenderBinding>(context) {
+        dialog = new BaseBottomDialog<BottomCalenderBinding>(context) {
             @Override
             protected int layout() {
                 return R.layout.bottom_calender;

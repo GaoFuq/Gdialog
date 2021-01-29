@@ -2,16 +2,9 @@ package com.gfq.dialog.base;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 
-import com.gfq.dialog.R;
-import com.gfq.dialog.util.DensityUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.annotation.LayoutRes;
@@ -25,50 +18,52 @@ import org.jetbrains.annotations.NotNull;
  * on {2019/10/17} {10:05}
  * desctapion:
  */
-public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> {
+public abstract class BaseBottomDialog<T extends ViewDataBinding> {
     private final LayoutInflater layoutInflater;
     protected T dgBinding;
     private BottomSheetDialog dialog;
     protected final Context context;
-    private int radius = DensityUtil.dp2px(10f);//dp
 
-    public BaseBottomRoundDialog(@NotNull Context context) {
-       this(context, DensityUtil.dp2px(10f));
+    public BaseBottomDialog(@NotNull Context context) {
+        this(context,0);
     }
-    public BaseBottomRoundDialog(@NotNull Context context,int radius) {
-        this.context = context;
+
+    /**
+     * 固定高度
+     * @param heightPercent  占屏幕高度的比例
+     */
+    public BaseBottomDialog(@NotNull Context context, float heightPercent) {
+        dialog = new MyBottomSheetDialog(context, heightPercent);
         layoutInflater = LayoutInflater.from(context);
-        this.radius=radius;
+        this.context = context;
         initBase();
     }
 
-
-
-    public BottomSheetDialog getDialog() {
-        return dialog;
+    /**
+     * 固定高度
+     * @param fixedHeight  固定值 单位dp
+     */
+    public BaseBottomDialog(@NotNull Context context, int fixedHeight) {
+        dialog = new MyBottomSheetDialog(context, fixedHeight);
+        layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        initBase();
     }
 
     private void initBase() {
         dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-        dialog = new BottomSheetDialog(context);
         dialog.setContentView(dgBinding.getRoot());
-//        dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
-        dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackground(getDrawable());
+        View parent = dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if(parent !=null){
+            parent.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        }
         dialog.setCanceledOnTouchOutside(true);
-        beforeBindView();
         bindView();
     }
 
-    protected void beforeBindView() {
 
-    }
-
-    private Drawable getDrawable() {
-        float[] outerR = new float[] { radius, radius, radius, radius, 0, 0, 0, 0 };
-        RoundRectShape roundRectShape = new RoundRectShape(outerR, null, null);
-        ShapeDrawable drawable = new ShapeDrawable(roundRectShape);
-        drawable.setTint(Color.WHITE);
-        return drawable;
+    public BottomSheetDialog getDialog() {
+        return dialog;
     }
 
 
@@ -96,5 +91,11 @@ public abstract class BaseBottomRoundDialog<T extends ViewDataBinding> {
     public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
         dialog.setOnDismissListener(listener);
     }
+
+
+    public Context getContext() {
+        return context;
+    }
+
 
 }

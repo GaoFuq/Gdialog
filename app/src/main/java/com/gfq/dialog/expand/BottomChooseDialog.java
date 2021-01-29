@@ -7,7 +7,7 @@ import android.graphics.Color;
 import com.contrarywind.adapter.WheelAdapter;
 import com.contrarywind.view.WheelView;
 import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseBottomRoundDialog;
+import com.gfq.dialog.base.BaseBottomDialog;
 import com.gfq.dialog.databinding.BottomChooseDialogBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import java.util.List;
  * on {2019/10/17} {15:26}
  * desctapion:
  */
-public abstract class BottomChooseDialog<T> extends BaseBottomRoundDialog<BottomChooseDialogBinding> {
+public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChooseDialogBinding> {
 
     private T content;
     private List<T> dataList;
