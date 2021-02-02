@@ -28,10 +28,6 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
         super(context);
     }
 
-    public BottomChooseDialog(@NotNull Context context, int radius) {
-        super(context, radius);
-    }
-
     @Override
     protected int layout() {
         return R.layout.bottom_choose_dialog;

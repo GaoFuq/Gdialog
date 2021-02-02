@@ -36,17 +36,14 @@ public class ChooseDateBottomDialog extends BaseBottomDialog<DialogChooseDateBin
         return R.layout.dialog_choose_date;
     }
 
-    @Override
-    protected void beforeBindView() {
-        setCanHideWhenSwipeDown(false);
-        setCanceledOnTouchOutside(true);
-        initData();
-        setDateType(DateType.year_month_day);
-    }
 
 
     @Override
     protected void bindView() {
+        setCanHideWhenSwipeDown(false);
+        setCanceledOnTouchOutside(true);
+        initData();
+        setDateType(DateType.year_month_day);
         bindDialogView();
     }
 
