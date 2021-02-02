@@ -21,7 +21,6 @@ import android.view.WindowManager;
 import com.gfq.dialog.util.DensityUtil;
 
 import androidx.annotation.LayoutRes;
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
