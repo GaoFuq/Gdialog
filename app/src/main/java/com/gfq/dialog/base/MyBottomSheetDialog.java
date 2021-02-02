@@ -1,13 +1,21 @@
 package com.gfq.dialog.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
+import androidx.annotation.FloatRange;
+
+import com.gfq.dialog.expand.calender.BottomCalenderDialog;
 import com.gfq.dialog.util.DensityUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -19,72 +27,110 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 public class MyBottomSheetDialog extends BottomSheetDialog {
 
     private float heightPercent;
-    private int fixedHeight;//dp
+    private float widthPercent;
+    private int fixedHeight;
+    private int fixedWidth;
+    private Window window;
+    private int horizontalMargin;
+    private int verticalMargin;
+    private int gravity = Gravity.BOTTOM;
     private int screenH;
+    private int screenW;
+
 
     public MyBottomSheetDialog(Context context) {
         super(context);
-    }
-
-    public MyBottomSheetDialog(Context context, float heightPercent) {
-        super(context);
-        this.heightPercent = heightPercent;
-    }
-
-    public MyBottomSheetDialog(Context context, int fixedHeight) {
-        super(context);
-        this.fixedHeight = fixedHeight;
     }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window window = getWindow();
+        window = getWindow();
         if (window != null) {
-            Display mDisplay = window.getWindowManager().getDefaultDisplay();// 获取屏幕宽、高用
+            Display display = window.getWindowManager().getDefaultDisplay();
             Point p = new Point();
-            mDisplay.getRealSize(p);
+            display.getRealSize(p);
             screenH = p.y;
-        }
-
-        if (heightPercent >= 1) {
-            heightPercent = 0;
-        }
-
-        if (fixedHeight >= screenH) {
-            fixedHeight = 0;
-        }
-
-
-        if (heightPercent != 0) {
-            fixedHeightPercent();
-        }
-
-        if (fixedHeight != 0) {
-            fixedHeight();
+            screenW = p.x;
         }
     }
 
-    private void fixedHeightPercent() {
-        Window window = getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (screenH * heightPercent));
-            window.setGravity(Gravity.BOTTOM);
-            getBehavior().setPeekHeight((int) (screenH * heightPercent));
-        }
 
+
+    public void setWidthPercent(float widthPercent) {
+        this.widthPercent = widthPercent;
+        getBehavior().setPeekHeight((int) (screenW * widthPercent));
+        setAttributes();
     }
 
-    private void fixedHeight() {
-        Window window = getWindow();
-        if (window != null) {
-            int height = DensityUtil.dp2px(fixedHeight);
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height);
-            window.setGravity(Gravity.BOTTOM);
-            getBehavior().setPeekHeight(height);
-        }
+    public void setFixedWidth(int fixedWidth) {
+        this.fixedWidth = fixedWidth;
+        setAttributes();
+    }
 
+    public void setHeightPercent(float heightPercent) {
+        this.heightPercent = heightPercent;
+        getBehavior().setPeekHeight((int) (screenH * heightPercent));
+        setAttributes();
+    }
+    public void setFixedHeight(int fixedHeight) {
+        this.fixedHeight = fixedHeight;
+        setAttributes();
+    }
+
+    public void setGravity(int gravity){
+        this.gravity = gravity;
+        setAttributes();
+    }
+
+
+    public void setHorizontalMargin(int horizontalMargin){
+        this.horizontalMargin = horizontalMargin;
+        setAttributes();
+    }
+
+    public void setVerticalMargin(int verticalMargin){
+        this.verticalMargin = verticalMargin;
+        setAttributes();
+    }
+
+
+
+
+
+    private void setAttributes() {
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+
+
+            lp.x = horizontalMargin;
+            lp.y = verticalMargin;
+
+
+            if (widthPercent > 0) {
+                lp.width = (int) (screenW * widthPercent);
+            }
+
+            if (fixedWidth > 0) {
+                lp.width = fixedWidth;
+            }
+
+
+            if (heightPercent > 0) {
+                lp.height = (int) (screenH * heightPercent);
+            }
+            if (fixedHeight > 0) {
+                lp.height = fixedHeight;
+            }
+
+            if (gravity != 0) {
+                window.setGravity(gravity);
+            }
+
+            window.setAttributes(lp);
+
+        }
     }
 
 

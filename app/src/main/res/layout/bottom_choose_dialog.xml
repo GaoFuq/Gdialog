@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_55">
+            android:layout_height="50dp">
 
             <TextView
                 android:id="@+id/tv_cancel"
@@ -57,7 +57,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/dvd" />
+            android:background="#c9c9c9" />
 
         <com.contrarywind.view.WheelView
             android:id="@+id/wheelView"

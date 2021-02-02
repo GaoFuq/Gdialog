@@ -4,21 +4,24 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.gfq.dialog.util.DensityUtil;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
@@ -27,60 +30,95 @@ import androidx.databinding.ViewDataBinding;
  * create by 高富强
  * on {2019/10/15} {17:22}
  * desctapion:
+ * 默认样式：
+ * 4周圆角5dp，
+ * 背景白色，
+ * 宽度 = 屏幕宽度 * 0.8，
+ * 高度包裹内容。
  */
-public abstract class BaseRoundDialog<T extends ViewDataBinding>{
+public abstract class BaseDialog<T extends ViewDataBinding> {
     private Context context;
     private Dialog dialog;
     private Window window;
     private LayoutInflater layoutInflater;
     protected T dgBinding;
-    private Drawable backgroundDrawable;
-    private @DrawableRes
-    int backgroundDrawableResource;
     private int gravity = Gravity.CENTER;
+    /**
+     * 横向margin 单位dp
+     */
     private int horizontalMargin = 0;
+    /**
+     * 纵向margin 单位dp
+     */
     private int verticalMargin = 0;
     /**
      * 默认背景色 白色
      */
     private int backgroundColor = Color.WHITE;
-
     /**
      * 默认圆角 5dp
      */
     private int radius = DensityUtil.dp2px(5);
     /**
-     * 默认宽度 = 屏幕宽度 * 0.8
+     * 宽度 占屏幕宽度 百分比
      */
     private float widthPercent = 0.8f;
     /**
-     * 默认高度 = 包裹内容
+     * 高度 占屏幕高度 百分比
      */
     private float heightPercent = 0;
 
 
-    public BaseRoundDialog(Context context) {
+    public BaseDialog(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+
         init();
     }
 
 
     private void init() {
-        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
         dialog = new Dialog(context);
         window = dialog.getWindow();
+        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
 
         dialog.setContentView(dgBinding.getRoot());
         dialog.setCanceledOnTouchOutside(true);
 
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        //  设置默认样式
-        setWidthPercent(0.8f);
-        setBackgroundColor(Color.WHITE);
-        setRadius(radius);
+        Drawable background = dgBinding.getRoot().getBackground();
+        if (background == null) {
+            setDefaultStyle();  //  设置默认样式
+        }
 
         bindView();
+    }
+
+    private void setDefaultStyle() {
+        setWidthPercent(0.8f);
+        window.setBackgroundDrawable(getDrawable(backgroundColor));
+    }
+
+    public void setRadius(int radius) {
+        this.radius = DensityUtil.dp2px(radius);
+        window.setBackgroundDrawable(getDrawable(Color.TRANSPARENT));
+        Drawable drawable = getDrawable(backgroundColor);
+        dgBinding.getRoot().setBackground(drawable);
+    }
+
+    public void setBackgroundColor(int color) {
+        this.backgroundColor = color;
+        Drawable drawable = getDrawable(color);
+        dgBinding.getRoot().setBackground(drawable);
+    }
+
+    private Drawable getDrawable(int backgroundColor) {
+        float[] outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+        RoundRectShape roundRectShape = new RoundRectShape(outerR, null, null);
+        ShapeDrawable drawable = new ShapeDrawable(roundRectShape);
+        drawable.setTint(backgroundColor);
+        return drawable;
     }
 
     protected abstract @LayoutRes
@@ -139,6 +177,7 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding>{
         }
     }
 
+
     public void setWidthPercent(float widthPercent) {
         this.widthPercent = widthPercent;
         setAttributes();
@@ -165,45 +204,7 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding>{
         setAttributes();
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
-        setRadiusOrBackgroundColor();
-    }
 
-    public void setBackgroundDrawable(Drawable drawable) {
-        if (drawable == null) return;
-        this.backgroundDrawable = drawable;
-        if (window != null) {
-            window.setBackgroundDrawable(drawable);
-        }
-    }
-
-    public void setBackgroundDrawableResource(@DrawableRes int backgroundDrawableResource) {
-        if (backgroundDrawableResource == 0) return;
-        this.backgroundDrawableResource = backgroundDrawableResource;
-        if (window != null) {
-            window.setBackgroundDrawableResource(backgroundDrawableResource);
-        }
-    }
-
-    public void setBackgroundColor(@ColorInt int color) {
-        backgroundColor = color;
-        setRadiusOrBackgroundColor();
-    }
-
-    private void setRadiusOrBackgroundColor() {
-        if (window != null) {
-            window.setBackgroundDrawable(getDrawable(DensityUtil.dp2px(radius), backgroundColor));
-        }
-    }
-
-    private Drawable getDrawable(int radius, @ColorInt int color) {
-        float[] outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-        RoundRectShape roundRectShape = new RoundRectShape(outerR, null, null);
-        ShapeDrawable drawable = new ShapeDrawable(roundRectShape);
-        drawable.setTint(color);
-        return drawable;
-    }
     public void show() {
         dialog.show();
     }
@@ -236,13 +237,6 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding>{
         return heightPercent;
     }
 
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
 
     public int getGravity() {
         return gravity;
@@ -256,12 +250,17 @@ public abstract class BaseRoundDialog<T extends ViewDataBinding>{
         return verticalMargin;
     }
 
-    public Drawable getBackgroundDrawable() {
-        return backgroundDrawable;
+
+    public Context getContext() {
+        return context;
     }
 
-    public int getBackgroundDrawableResource() {
-        return backgroundDrawableResource;
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public int getRadius() {
+        return radius;
     }
 }
 

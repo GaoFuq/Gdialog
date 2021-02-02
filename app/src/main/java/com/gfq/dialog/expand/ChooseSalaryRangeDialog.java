@@ -6,7 +6,7 @@ import android.graphics.Color;
 import com.contrarywind.adapter.WheelAdapter;
 import com.contrarywind.listener.OnItemSelectedListener;
 import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseRoundDialog;
+import com.gfq.dialog.base.BaseDialog;
 import com.gfq.dialog.databinding.DialogChooseSalaryRangeBinding;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
  * @Date 2020/7/22 16:32
  * @Descaption
  */
-public class ChooseSalaryRangeDialog extends BaseRoundDialog<DialogChooseSalaryRangeBinding> {
+public class ChooseSalaryRangeDialog extends BaseDialog<DialogChooseSalaryRangeBinding> {
 
     private Context context;
     private int minSalary = 1;
