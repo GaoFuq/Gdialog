@@ -1,22 +1,13 @@
 package com.gfq.dialog.base;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.FloatRange;
-
-import com.gfq.dialog.expand.calender.BottomCalenderDialog;
-import com.gfq.dialog.util.DensityUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 /**
