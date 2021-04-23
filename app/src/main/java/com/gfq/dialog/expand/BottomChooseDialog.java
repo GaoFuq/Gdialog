@@ -46,7 +46,7 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
             onConfirmClicked(content);
         });
         dataList = getDataList();
-        content = dataList.get(1);
+        content = dataList.get(0);
         WheelAdapter<T> adapter = new WheelAdapter<T>() {
             @Override
             public int getItemsCount() {
