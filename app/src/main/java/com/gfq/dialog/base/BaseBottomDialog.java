@@ -70,6 +70,7 @@ public abstract class BaseBottomDialog<T extends ViewDataBinding> {
     private void initBase() {
         dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
         dialog.setContentView(dgBinding.getRoot());
+        dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(true);
 
         designBottomSheet = dialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet);
