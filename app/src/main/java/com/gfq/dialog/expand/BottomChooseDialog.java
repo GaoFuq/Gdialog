@@ -21,8 +21,9 @@ import java.util.List;
  */
 public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChooseDialogBinding> {
 
-    private T content;
+    private String content;
     private List<T> dataList;
+    private T data;
 
     public BottomChooseDialog(@NotNull Context context) {
         super(context);
@@ -43,30 +44,34 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
         dgBinding.tvCancel.setOnClickListener(v -> dismiss());
         dgBinding.tvConfirm.setOnClickListener(v -> {
             dismiss();
-            onConfirmClicked(content);
+            onConfirmClicked(content,data);
         });
         dataList = getDataList();
-        content = dataList.get(0);
-        WheelAdapter<T> adapter = new WheelAdapter<T>() {
+        content = returnDataRule(dataList,0);
+        data = dataList.get(0);
+        WheelAdapter<String> adapter = new WheelAdapter<String>() {
             @Override
             public int getItemsCount() {
                 return dataList == null ? 0 : dataList.size();
             }
 
             @Override
-            public T getItem(int index) {
-                return dataList.get(index);
+            public String getItem(int index) {
+                return returnDataRule(dataList,index);
             }
 
             @Override
-            public int indexOf(T o) {
-                return dataList.indexOf(o);
+            public int indexOf(String o) {
+                return 0;
             }
         };
         dgBinding.wheelView.setAdapter(adapter);
         dgBinding.wheelView.setCurrentItem(0);
         dgBinding.wheelView.setCyclic(false);
-        dgBinding.wheelView.setOnItemSelectedListener(index -> content = dataList.get(index));
+        dgBinding.wheelView.setOnItemSelectedListener(index ->{
+            content = returnDataRule(dataList,index);
+            data = dataList.get(index);
+        } );
         dgBinding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
         dgBinding.wheelView.setTextColorOut(Color.parseColor("#666666"));
         dgBinding.wheelView.setTextSize(14);
@@ -74,6 +79,7 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
         dgBinding.wheelView.setLineSpacingMultiplier(3);
         dgBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
     }
+
 
     public void setTitleStyle(String text, int textColor, int textSize) {
         dgBinding.tvTitle.setText(text);
@@ -94,10 +100,9 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
     }
 
     protected abstract String getTitle();
-
-    public abstract List<T> getDataList();
-
-    protected abstract void onConfirmClicked(T content);
+    protected abstract List<T> getDataList();
+    protected abstract void onConfirmClicked(String content,T data);
+    protected abstract String returnDataRule(List<T> dataList,int index);
 
 
 }
