@@ -118,10 +118,10 @@ public class ChooseDateTimeDialog extends BaseDialog<DialogChooseDateBinding> {
         for (int i = 1; i < 32; i++) {
             dayList.add(i);
         }
-        for (int i = 1; i < 25; i++) {
+        for (int i = 1; i < 24; i++) {
             hourList.add(i);
         }
-        for (int i = 1; i < 61; i++) {
+        for (int i = 1; i < 60; i++) {
             minList.add(i);
             secList.add(i);
         }
