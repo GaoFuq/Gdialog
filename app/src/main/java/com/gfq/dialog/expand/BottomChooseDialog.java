@@ -19,11 +19,49 @@ import java.util.List;
  * on {2019/10/17} {15:26}
  * desctapion:
  */
-public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChooseDialogBinding> {
+public abstract class BottomChooseDialog extends BaseBottomDialog<BottomChooseDialogBinding> {
 
     private String content;
-    private List<T> dataList;
-    private T data;
+    private List<String> dataList;
+    private int index = 0;
+
+
+    public List<String> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<String> dataList) {
+        this.dataList = dataList;
+        WheelAdapter<String> adapter = new WheelAdapter<String>() {
+            @Override
+            public int getItemsCount() {
+                return dataList == null ? 0 : dataList.size();
+            }
+
+            @Override
+            public String getItem(int index) {
+                return dataList.get(index);
+            }
+
+            @Override
+            public int indexOf(String o) {
+                return dataList.indexOf(o);
+            }
+        };
+        dgBinding.wheelView.setAdapter(adapter);
+        dgBinding.wheelView.setCurrentItem(0);
+        dgBinding.wheelView.setCyclic(false);
+        dgBinding.wheelView.setOnItemSelectedListener(index -> {
+            content = dataList.get(index);
+            this.index=index;
+        });
+        dgBinding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
+        dgBinding.wheelView.setTextColorOut(Color.parseColor("#666666"));
+        dgBinding.wheelView.setTextSize(14);
+        dgBinding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
+        dgBinding.wheelView.setLineSpacingMultiplier(3);
+        dgBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
+    }
 
     public BottomChooseDialog(@NotNull Context context) {
         super(context);
@@ -40,45 +78,15 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
     }
 
     private void init() {
-        dgBinding.tvTitle.setText(getTitle());
+        dgBinding.tvTitle.setText(title());
         dgBinding.tvCancel.setOnClickListener(v -> dismiss());
         dgBinding.tvConfirm.setOnClickListener(v -> {
             dismiss();
-            onConfirmClicked(content,data);
+            onConfirmClicked(content,index);
         });
-        dataList = getDataList();
-        content = returnDataRule(dataList,0);
-        data = dataList.get(0);
-        WheelAdapter<String> adapter = new WheelAdapter<String>() {
-            @Override
-            public int getItemsCount() {
-                return dataList == null ? 0 : dataList.size();
-            }
-
-            @Override
-            public String getItem(int index) {
-                return returnDataRule(dataList,index);
-            }
-
-            @Override
-            public int indexOf(String o) {
-                return 0;
-            }
-        };
-        dgBinding.wheelView.setAdapter(adapter);
-        dgBinding.wheelView.setCurrentItem(0);
-        dgBinding.wheelView.setCyclic(false);
-        dgBinding.wheelView.setOnItemSelectedListener(index ->{
-            content = returnDataRule(dataList,index);
-            data = dataList.get(index);
-        } );
-        dgBinding.wheelView.setTextColorCenter(Color.parseColor("#333333"));
-        dgBinding.wheelView.setTextColorOut(Color.parseColor("#666666"));
-        dgBinding.wheelView.setTextSize(14);
-        dgBinding.wheelView.setDividerColor(Color.parseColor("#cccccc"));
-        dgBinding.wheelView.setLineSpacingMultiplier(3);
-        dgBinding.wheelView.setDividerType(WheelView.DividerType.WRAP);
     }
+
+
 
 
     public void setTitleStyle(String text, int textColor, int textSize) {
@@ -99,10 +107,9 @@ public abstract class BottomChooseDialog<T> extends BaseBottomDialog<BottomChoos
         dgBinding.tvCancel.setTextSize(textSize);
     }
 
-    protected abstract String getTitle();
-    protected abstract List<T> getDataList();
-    protected abstract void onConfirmClicked(String content,T data);
-    protected abstract String returnDataRule(List<T> dataList,int index);
+    protected abstract String title();
+
+    protected abstract void onConfirmClicked(String content, int index);
 
 
 }
