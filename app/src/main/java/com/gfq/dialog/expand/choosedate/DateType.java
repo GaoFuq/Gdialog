@@ -6,5 +6,7 @@ package com.gfq.dialog.expand.choosedate;
  * @Descaption
  */
 public enum DateType {
-    year_month_day,year_month, month_day
+    year_month_day,year_month, month_day,
+    hour_min_second,hour_min,min_second,
+    year_month_day_hour_min_second
 }

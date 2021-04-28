@@ -103,6 +103,48 @@
                     />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_hour"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.contrarywind.view.WheelView
+                    android:id="@+id/wv_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_min"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.contrarywind.view.WheelView
+                    android:id="@+id/wv_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sec"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.contrarywind.view.WheelView
+                    android:id="@+id/wv_sec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </layout>
