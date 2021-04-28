@@ -291,6 +291,9 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
             if (month.length() == 1 && Integer.parseInt(month) < 10) {
                 month = "0" + month;
             }
+            if (day.length() == 1 && Integer.parseInt(day) < 10) {
+                day = "0" + day;
+            }
             if (hour.length() == 1 && Integer.parseInt(hour) < 10) {
                 hour = "0" + hour;
             }
