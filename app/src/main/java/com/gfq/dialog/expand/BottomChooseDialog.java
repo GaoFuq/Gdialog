@@ -48,6 +48,8 @@ public abstract class BottomChooseDialog extends BaseBottomDialog<BottomChooseDi
                 return dataList.indexOf(o);
             }
         };
+
+        content = dataList.get(0);
         dgBinding.wheelView.setAdapter(adapter);
         dgBinding.wheelView.setCurrentItem(0);
         dgBinding.wheelView.setCyclic(false);
