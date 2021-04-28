@@ -249,13 +249,13 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
         dgBinding.wvMonth.setCurrentItem(m);
         int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
-        dgBinding.wvDay.setCurrentItem(d - 1);
+        dgBinding.wvDay.setCurrentItem(Math.max((d - 1), 0));
         int h = Calendar.getInstance(Locale.CHINA).get(Calendar.HOUR_OF_DAY);
-        dgBinding.wvHour.setCurrentItem(h - 1);
+        dgBinding.wvHour.setCurrentItem(Math.max((h - 1), 0));
         int minute = Calendar.getInstance(Locale.CHINA).get(Calendar.MINUTE);
-        dgBinding.wvMin.setCurrentItem(minute - 1);
+        dgBinding.wvMin.setCurrentItem(Math.max((minute - 1), 0));
         int second = Calendar.getInstance(Locale.CHINA).get(Calendar.SECOND);
-        dgBinding.wvSec.setCurrentItem(second - 1);
+        dgBinding.wvSec.setCurrentItem(Math.max((second - 1), 0));
         setLineHeight(3);
         isCenterLabel(false);
 
@@ -277,16 +277,16 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
                 month = monthAdapter.getItem(m) + "";
             }
             if (day.equals("")) {
-                day = dayAdapter.getItem(d - 1) + "";
+                day = dayAdapter.getItem(Math.max((d - 1), 0)) + "";
             }
             if (hour.equals("")) {
-                hour = hourAdapter.getItem(h-1) + "";
+                hour = hourAdapter.getItem(Math.max((h - 1), 0)) + "";
             }
             if (min.equals("")) {
-                min = minAdapter.getItem(minute-1) + "";
+                min = minAdapter.getItem(Math.max((minute - 1), 0)) + "";
             }
             if (sec.equals("")) {
-                sec = secAdapter.getItem(second - 1) + "";
+                sec = secAdapter.getItem(Math.max((second - 1), 0)) + "";
             }
             if (month.length() == 1 && Integer.parseInt(month) < 10) {
                 month = "0" + month;
