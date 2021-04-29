@@ -48,7 +48,7 @@ public abstract class BaseBottomDialog<T extends ViewDataBinding> {
     private int gravity = Gravity.BOTTOM;
 
     private final LayoutInflater layoutInflater;
-    private T dgBinding;
+    protected T dgBinding;
     private MyBottomSheetDialog dialog;
     protected final Context context;
     private int mBackgroundColor = Color.WHITE;
