@@ -120,10 +120,10 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         for (int i = 1; i < 32; i++) {
             dayList.add(i);
         }
-        for (int i = 1; i < 24; i++) {
+        for (int i = 0; i < 24; i++) {
             hourList.add(i);
         }
-        for (int i = 1; i < 60; i++) {
+        for (int i = 0; i < 60; i++) {
             minList.add(i);
             secList.add(i);
         }
