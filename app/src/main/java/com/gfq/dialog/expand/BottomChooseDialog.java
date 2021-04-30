@@ -2,6 +2,7 @@ package com.gfq.dialog.expand;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 
 
 import com.contrarywind.adapter.WheelAdapter;
@@ -32,10 +33,14 @@ public abstract class BottomChooseDialog extends BaseBottomDialog<BottomChooseDi
 
     public void setDataList(List<String> dataList) {
         this.dataList = dataList;
+        if(dataList==null||dataList.isEmpty()){
+            Log.e("BottomChooseDialog","dataList == null or empty");
+            return;
+        }
         WheelAdapter<String> adapter = new WheelAdapter<String>() {
             @Override
             public int getItemsCount() {
-                return dataList == null ? 0 : dataList.size();
+                return dataList.size();
             }
 
             @Override
