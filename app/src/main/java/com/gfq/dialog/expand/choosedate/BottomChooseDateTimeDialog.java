@@ -280,13 +280,13 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
                 day = dayAdapter.getItem(Math.max((d - 1), 0)) + "";
             }
             if (hour.equals("")) {
-                hour = hourAdapter.getItem(Math.max((h - 1), 0)) + "";
+                hour = hourAdapter.getItem(h) + "";
             }
             if (min.equals("")) {
-                min = minAdapter.getItem(Math.max((minute - 1), 0)) + "";
+                min = minAdapter.getItem(minute) + "";
             }
             if (sec.equals("")) {
-                sec = secAdapter.getItem(Math.max((second - 1), 0)) + "";
+                sec = secAdapter.getItem(second) + "";
             }
             if (month.length() == 1 && Integer.parseInt(month) < 10) {
                 month = "0" + month;
