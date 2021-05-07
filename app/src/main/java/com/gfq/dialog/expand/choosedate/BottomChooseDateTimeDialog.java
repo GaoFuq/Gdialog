@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.contrarywind.adapter.WheelAdapter;
+import com.contrarywind.view.WheelView;
 import com.gfq.dialog.R;
 import com.gfq.dialog.base.BaseBottomDialog;
 import com.gfq.dialog.databinding.DialogChooseDateBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDateBinding> {
@@ -85,7 +87,7 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
             dgBinding.llYear.setVisibility(View.GONE);
             dgBinding.llMonth.setVisibility(View.GONE);
             dgBinding.llDay.setVisibility(View.GONE);
-        }else if (dateType == DateType.hour_min) {
+        } else if (dateType == DateType.hour_min) {
             dgBinding.llHour.setVisibility(View.VISIBLE);
             dgBinding.llMin.setVisibility(View.VISIBLE);
             dgBinding.llSec.setVisibility(View.GONE);
@@ -126,6 +128,25 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         for (int i = 0; i < 60; i++) {
             minList.add(i);
             secList.add(i);
+        }
+
+        if(yearIntercept!=null){
+            yearList = yearIntercept.intercept(yearList,dgBinding.wvYear);
+        }
+        if(monthIntercept!=null){
+            monthList = monthIntercept.intercept(monthList,dgBinding.wvMonth);
+        }
+        if(dayIntercept!=null){
+            dayList = dayIntercept.intercept(dayList,dgBinding.wvDay);
+        }
+        if(hourIntercept!=null){
+            hourList = hourIntercept.intercept(hourList,dgBinding.wvHour);
+        }
+        if(minIntercept!=null){
+            minList = minIntercept.intercept(minList,dgBinding.wvMin);
+        }
+        if(secIntercept!=null){
+            secList = secIntercept.intercept(secList,dgBinding.wvSec);
         }
 
         yearAdapter = new WheelAdapter<Integer>() {
@@ -230,7 +251,6 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
     private void bindDialogView() {
 
 
-
         dgBinding.wvYear.setAdapter(yearAdapter);
         dgBinding.wvMonth.setAdapter(monthAdapter);
         dgBinding.wvDay.setAdapter(dayAdapter);
@@ -249,13 +269,13 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
         dgBinding.wvMonth.setCurrentItem(m);
         int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
-        dgBinding.wvDay.setCurrentItem(Math.max((d - 1), 0));
+        dgBinding.wvDay.setCurrentItem(d);
         int h = Calendar.getInstance(Locale.CHINA).get(Calendar.HOUR_OF_DAY);
-        dgBinding.wvHour.setCurrentItem(Math.max((h - 1), 0));
+        dgBinding.wvHour.setCurrentItem(h);
         int minute = Calendar.getInstance(Locale.CHINA).get(Calendar.MINUTE);
-        dgBinding.wvMin.setCurrentItem(Math.max((minute - 1), 0));
+        dgBinding.wvMin.setCurrentItem(minute);
         int second = Calendar.getInstance(Locale.CHINA).get(Calendar.SECOND);
-        dgBinding.wvSec.setCurrentItem(Math.max((second - 1), 0));
+        dgBinding.wvSec.setCurrentItem(second);
         setLineHeight(3);
         isCenterLabel(false);
 
@@ -304,7 +324,7 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
                 sec = "0" + sec;
             }
             if (onChooseDateConfirmListener != null) {
-                onChooseDateConfirmListener.onConfirm(year, month, day,hour,min,sec);
+                onChooseDateConfirmListener.onConfirm(year, month, day, hour, min, sec);
             }
         });
 
@@ -354,6 +374,14 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         dgBinding.wvSec.isCenterLabel(b);
     }
 
+    public void setLoop(boolean yearLoop, boolean monthLoop, boolean dayLoop, boolean hourLoop, boolean minLoop, boolean secLoop) {
+        dgBinding.wvYear.setCyclic(yearLoop);
+        dgBinding.wvMonth.setCyclic(monthLoop);
+        dgBinding.wvDay.setCyclic(dayLoop);
+        dgBinding.wvHour.setCyclic(hourLoop);
+        dgBinding.wvMin.setCyclic(minLoop);
+        dgBinding.wvSec.setCyclic(secLoop);
+    }
 
     public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
         setWheelViewDefStyle(textColor, textColorCenter, textSize);
@@ -389,12 +417,62 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
 
 
     public interface OnChooseDateConfirmListener {
-        void onConfirm(String year, String month, String day, String hour,String min,String sec);
+        void onConfirm(String year, String month, String day, String hour, String min, String sec);
     }
 
     private OnChooseDateConfirmListener onChooseDateConfirmListener;
 
     public void setOnChooseDateConfirmListener(OnChooseDateConfirmListener onChooseDateConfirmListener) {
         this.onChooseDateConfirmListener = onChooseDateConfirmListener;
+    }
+
+    public interface YearIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> yearList, WheelView wvYear);
+    }
+    public interface MonthIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> monthList, WheelView wvMonth);
+    }
+    public interface DayIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> dayList, WheelView wvDay);
+    }
+    public interface HourIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> hourList, WheelView wvHour);
+    }
+    public interface MinIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> minList, WheelView wvMin);
+    }
+    public interface SecIntercept {
+        ArrayList<Integer> intercept(ArrayList<Integer> secList, WheelView wvSec);
+    }
+
+    private YearIntercept yearIntercept;
+    private MonthIntercept monthIntercept;
+    private DayIntercept dayIntercept;
+    private HourIntercept hourIntercept;
+    private MinIntercept minIntercept;
+    private SecIntercept secIntercept;
+
+    public void setYearIntercept(YearIntercept yearIntercept) {
+        this.yearIntercept = yearIntercept;
+    }
+
+    public void setMonthIntercept(MonthIntercept monthIntercept) {
+        this.monthIntercept = monthIntercept;
+    }
+
+    public void setDayIntercept(DayIntercept dayIntercept) {
+        this.dayIntercept = dayIntercept;
+    }
+
+    public void setHourIntercept(HourIntercept hourIntercept) {
+        this.hourIntercept = hourIntercept;
+    }
+
+    public void setMinIntercept(MinIntercept minIntercept) {
+        this.minIntercept = minIntercept;
+    }
+
+    public void setSecIntercept(SecIntercept secIntercept) {
+        this.secIntercept = secIntercept;
     }
 }
