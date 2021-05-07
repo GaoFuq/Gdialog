@@ -269,7 +269,7 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
         int m = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH);
         dgBinding.wvMonth.setCurrentItem(m);
         int d = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
-        dgBinding.wvDay.setCurrentItem(d);
+        dgBinding.wvDay.setCurrentItem(d-1);
         int h = Calendar.getInstance(Locale.CHINA).get(Calendar.HOUR_OF_DAY);
         dgBinding.wvHour.setCurrentItem(h);
         int minute = Calendar.getInstance(Locale.CHINA).get(Calendar.MINUTE);
