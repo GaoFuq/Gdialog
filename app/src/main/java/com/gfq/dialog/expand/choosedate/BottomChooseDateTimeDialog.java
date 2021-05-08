@@ -130,25 +130,6 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
             secList.add(i);
         }
 
-        if(yearIntercept!=null){
-            yearList = yearIntercept.intercept(yearList,dgBinding.wvYear);
-        }
-        if(monthIntercept!=null){
-            monthList = monthIntercept.intercept(monthList,dgBinding.wvMonth);
-        }
-        if(dayIntercept!=null){
-            dayList = dayIntercept.intercept(dayList,dgBinding.wvDay);
-        }
-        if(hourIntercept!=null){
-            hourList = hourIntercept.intercept(hourList,dgBinding.wvHour);
-        }
-        if(minIntercept!=null){
-            minList = minIntercept.intercept(minList,dgBinding.wvMin);
-        }
-        if(secIntercept!=null){
-            secList = secIntercept.intercept(secList,dgBinding.wvSec);
-        }
-
         yearAdapter = new WheelAdapter<Integer>() {
             @Override
             public int getItemsCount() {
@@ -330,8 +311,37 @@ public class BottomChooseDateTimeDialog extends BaseBottomDialog<DialogChooseDat
 
         setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
 
+
+        if(yearIntercept!=null){
+            yearList = yearIntercept.intercept(yearList,dgBinding.wvYear);
+        }
+        if(monthIntercept!=null){
+            monthList = monthIntercept.intercept(monthList,dgBinding.wvMonth);
+        }
+        if(dayIntercept!=null){
+            dayList = dayIntercept.intercept(dayList,dgBinding.wvDay);
+        }
+        if(hourIntercept!=null){
+            hourList = hourIntercept.intercept(hourList,dgBinding.wvHour);
+        }
+        if(minIntercept!=null){
+            minList = minIntercept.intercept(minList,dgBinding.wvMin);
+        }
+        if(secIntercept!=null){
+            secList = secIntercept.intercept(secList,dgBinding.wvSec);
+        }
+
     }
 
+    public void setWvHourCurItem(int i){
+        dgBinding.wvHour.setCurrentItem(i);
+        hour = hourList.get(i).toString();
+    }
+
+    public void setWvMinCurItem(int i){
+        dgBinding.wvMin.setCurrentItem(i);
+        min = minList.get(i).toString();
+    }
     private void setWheelViewDefStyle(int textColor, int textColorCenter, int textSize) {
         dgBinding.wvYear.setTextColorOut(textColor);
         dgBinding.wvYear.setTextColorCenter(textColorCenter);
