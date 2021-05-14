@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
@@ -59,7 +60,7 @@ public abstract class BaseBottomDialog<T extends ViewDataBinding> {
     private final MyOutLine myOutLine = new MyOutLine(DensityUtil.dp2px(10));
 
 
-    public BaseBottomDialog(@NotNull Context context) {
+    public BaseBottomDialog(Context context) {
         dialog = new MyBottomSheetDialog(context);
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
