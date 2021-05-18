@@ -37,53 +37,97 @@ abstract class BaseDialog<T : ViewDataBinding> {
     var window: Window? = null
     lateinit var dgBinding: T
 
-    private var gravity = Gravity.CENTER
+    var gravity = Gravity.CENTER
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 横向margin 单位dp
      */
-    private var horizontalMargin = 0
+    var horizontalMargin = 0
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 纵向margin 单位dp
      */
-    private var verticalMargin = 0
+    var verticalMargin = 0
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 默认背景色 白色
      */
-    private var roundRectBackgroundColor = Color.WHITE
+    var roundRectBackgroundColor = Color.WHITE
+        set(value) {
+            field = value
+            val drawable = getRoundRectDrawable(value)
+            dgBinding.root.background = drawable
+        }
+
 
     /**
      * 默认圆角 5dp
      */
-    private var radius = DensityUtil.dp2px(5f)
+    var radius = DensityUtil.dp2px(5f)
+        set(value) {
+            field = DensityUtil.dp2px(value.toFloat())
+            window?.setBackgroundDrawable(getRoundRectDrawable(Color.TRANSPARENT))
+            val drawable = getRoundRectDrawable(roundRectBackgroundColor)
+            dgBinding.root.background = drawable
+        }
 
     /**
      * 宽度 占屏幕宽度 百分比
      */
-    private var widthPercent = 0.8f
+    var widthPercent = 0.8f
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 高度 占屏幕高度 百分比
      */
-    private var heightPercent = 0f
+    var heightPercent = 0f
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 固定宽度 优先级高于 百分比 单位dp
      */
-    private var fixedWidth = 0
+    var fixedWidth = 0
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 固定高度 优先级高于 百分比 单位dp
      */
-    private var fixedHeight = 0
+    var fixedHeight = 0
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
     /**
      * 调光量， 范围是从1.0（完全不透明）到0.0（完全透明）
      * （框框外面的蒙层的透明度）
      */
-    private var dim = -1f
+    var dim = -1f
+        set(value) {
+            field = value
+            setAttributes()
+        }
 
 
     private fun init(context: Context) {
@@ -101,22 +145,10 @@ abstract class BaseDialog<T : ViewDataBinding> {
     }
 
     private fun setDefaultStyle() {
-        setWidthPercent(0.8f)
+        widthPercent=0.8f
         window?.setBackgroundDrawable(getRoundRectDrawable(roundRectBackgroundColor))
     }
 
-    fun setRadius(radius: Int) {
-        this.radius = DensityUtil.dp2px(radius.toFloat())
-        window?.setBackgroundDrawable(getRoundRectDrawable(Color.TRANSPARENT))
-        val drawable = getRoundRectDrawable(roundRectBackgroundColor)
-        dgBinding.root.background = drawable
-    }
-
-    fun setRoundRectBackgroundColor(color: Int) {
-        roundRectBackgroundColor = color
-        val drawable = getRoundRectDrawable(color)
-        dgBinding.root.background = drawable
-    }
 
     fun getRoundRectDrawable(backgroundColor: Int): Drawable {
         val outerR = floatArrayOf(radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat())
@@ -184,45 +216,6 @@ abstract class BaseDialog<T : ViewDataBinding> {
         }
     }
 
-    fun setFixedWidth(fixedWidth: Int) {
-        this.fixedWidth = DensityUtil.dp2px(fixedWidth.toFloat())
-        setAttributes()
-    }
-
-    fun setFixedHeight(fixedHeight: Int) {
-        this.fixedHeight = DensityUtil.dp2px(fixedHeight.toFloat())
-        setAttributes()
-    }
-
-    fun setDim(dim: Float) {
-        this.dim = dim
-        setAttributes()
-    }
-
-    fun setWidthPercent(widthPercent: Float) {
-        this.widthPercent = widthPercent
-        setAttributes()
-    }
-
-    fun setHeightPercent(heightPercent: Float) {
-        this.heightPercent = heightPercent
-        setAttributes()
-    }
-
-    fun setGravity(gravity: Int) {
-        this.gravity = gravity
-        setAttributes()
-    }
-
-    fun setHorizontalMargin(horizontalMargin: Int) {
-        this.horizontalMargin = DensityUtil.dp2px(horizontalMargin.toFloat())
-        setAttributes()
-    }
-
-    fun setVerticalMargin(verticalMargin: Int) {
-        this.verticalMargin = DensityUtil.dp2px(verticalMargin.toFloat())
-        setAttributes()
-    }
 
     fun show(context: Context?) {
         this.context = context
