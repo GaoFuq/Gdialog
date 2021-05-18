@@ -1,26 +1,21 @@
-package com.gfq.dialog.base;
+package com.gfq.dialog.base
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Window;
-import android.view.WindowManager;
-
-import androidx.annotation.LayoutRes;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-
-import com.gfq.dialog.util.DensityUtil;
-
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RoundRectShape
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Window
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.gfq.dialog.util.DensityUtil
 
 /**
  * create by 高富强
@@ -31,97 +26,110 @@ import com.gfq.dialog.util.DensityUtil;
  * 背景白色，
  * 宽度 = 屏幕宽度 * 0.8，
  * 高度包裹内容。
+ *
+ *
+ *
+ * @see show(context:Context?)  方法传入context ,延迟初始化
  */
-public abstract class BaseDialog<T extends ViewDataBinding> {
-    private Context context;
-    private Dialog dialog;
-    private Window window;
-    private LayoutInflater layoutInflater;
-    protected T dgBinding;
-    private int gravity = Gravity.CENTER;
+abstract class BaseDialog<T : ViewDataBinding> {
+    var context: Context? = null
+    var dialog: Dialog? = null
+    var window: Window? = null
+    lateinit var dgBinding: T
+
+    private var gravity = Gravity.CENTER
+
     /**
      * 横向margin 单位dp
      */
-    private int horizontalMargin = 0;
+    private var horizontalMargin = 0
+
     /**
      * 纵向margin 单位dp
      */
-    private int verticalMargin = 0;
+    private var verticalMargin = 0
+
     /**
      * 默认背景色 白色
      */
-    private int backgroundColor = Color.WHITE;
+    private var roundRectBackgroundColor = Color.WHITE
+
     /**
      * 默认圆角 5dp
      */
-    private int radius = DensityUtil.dp2px(5);
+    private var radius = DensityUtil.dp2px(5f)
+
     /**
      * 宽度 占屏幕宽度 百分比
      */
-    private float widthPercent = 0.8f;
+    private var widthPercent = 0.8f
+
     /**
      * 高度 占屏幕高度 百分比
      */
-    private float heightPercent = 0;
+    private var heightPercent = 0f
+
+    /**
+     * 固定宽度 优先级高于 百分比 单位dp
+     */
+    private var fixedWidth = 0
+
+    /**
+     * 固定高度 优先级高于 百分比 单位dp
+     */
+    private var fixedHeight = 0
+
+    /**
+     * 调光量， 范围是从1.0（完全不透明）到0.0（完全透明）
+     * （框框外面的蒙层的透明度）
+     */
+    private var dim = -1f
 
 
-    public BaseDialog(Context context) {
-        this.context = context;
-        layoutInflater = LayoutInflater.from(context);
-
-        init();
-    }
-
-
-    private void init() {
-        dialog = new Dialog(context);
-        window = dialog.getWindow();
-        dgBinding = DataBindingUtil.inflate(layoutInflater, layout(), null, false);
-
-        dialog.setContentView(dgBinding.getRoot());
-        dialog.setCanceledOnTouchOutside(true);
-
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        Drawable background = dgBinding.getRoot().getBackground();
+    private fun init(context: Context) {
+        dialog = Dialog(context)
+        window = dialog?.window
+        dgBinding = DataBindingUtil.inflate(LayoutInflater.from(context), layout(), null, false)
+        dialog?.setContentView(dgBinding.root)
+        dialog?.setCanceledOnTouchOutside(true)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val background = dgBinding.root.background
         if (background == null) {
-            setDefaultStyle();  //  设置默认样式
+            setDefaultStyle() //  设置默认样式
         }
-
-        bindView();
+        bindView()
     }
 
-    private void setDefaultStyle() {
-        setWidthPercent(0.8f);
-        window.setBackgroundDrawable(getDrawable(backgroundColor));
+    private fun setDefaultStyle() {
+        setWidthPercent(0.8f)
+        window?.setBackgroundDrawable(getRoundRectDrawable(roundRectBackgroundColor))
     }
 
-    public void setRadius(int radius) {
-        this.radius = DensityUtil.dp2px(radius);
-        window.setBackgroundDrawable(getDrawable(Color.TRANSPARENT));
-        Drawable drawable = getDrawable(backgroundColor);
-        dgBinding.getRoot().setBackground(drawable);
+    fun setRadius(radius: Int) {
+        this.radius = DensityUtil.dp2px(radius.toFloat())
+        window?.setBackgroundDrawable(getRoundRectDrawable(Color.TRANSPARENT))
+        val drawable = getRoundRectDrawable(roundRectBackgroundColor)
+        dgBinding.root.background = drawable
     }
 
-    public void setBackgroundColor(int color) {
-        this.backgroundColor = color;
-        Drawable drawable = getDrawable(color);
-        dgBinding.getRoot().setBackground(drawable);
+    fun setRoundRectBackgroundColor(color: Int) {
+        roundRectBackgroundColor = color
+        val drawable = getRoundRectDrawable(color)
+        dgBinding.root.background = drawable
     }
 
-    private Drawable getDrawable(int backgroundColor) {
-        float[] outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-        RoundRectShape roundRectShape = new RoundRectShape(outerR, null, null);
-        ShapeDrawable drawable = new ShapeDrawable(roundRectShape);
-        drawable.setTint(backgroundColor);
-        return drawable;
+    fun getRoundRectDrawable(backgroundColor: Int): Drawable {
+        val outerR = floatArrayOf(radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat())
+        val roundRectShape = RoundRectShape(outerR, null, null)
+        val drawable = ShapeDrawable(roundRectShape)
+        drawable.setTint(backgroundColor)
+        return drawable
     }
 
-    protected abstract @LayoutRes
-    int layout();
+    @LayoutRes
+    protected abstract fun layout(): Int
 
-    protected abstract void bindView();
-
+    protected abstract fun bindView()
 
     /**
      * lp.x与lp.y表示相对于原始位置的偏移.
@@ -134,130 +142,113 @@ public abstract class BaseDialog<T extends ViewDataBinding> {
      * gravity的默认值为Gravity.CENTER,即Gravity.CENTER_HORIZONTAL |
      * Gravity.CENTER_VERTICAL.
      */
-    public void setAttributes() {
+    fun setAttributes() {
         if (window != null) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            Display mDisplay = window.getWindowManager().getDefaultDisplay();// 获取屏幕宽、高用
+            val lp = window!!.attributes
+            val mDisplay = window!!.windowManager.defaultDisplay // 获取屏幕宽、高用
 
 //            lp.x = 100; // 新位置X坐标
 //            lp.y = 100; // 新位置Y坐标
 //            lp.width = 300; // 宽度
 //            lp.height = 300; // 高度
 //            lp.alpha = 0.7f; // 透明度
-
-            lp.x = horizontalMargin;
-            lp.y = verticalMargin;
+            lp.x = horizontalMargin
+            lp.y = verticalMargin
+            if (dim >= 0) {
+                lp.dimAmount = dim
+            }
 
             // 当Window的Attributes改变时系统会调用此函数,可以直接调用以应用上面对窗口参数的更改,也可以用setAttributes
             // dialog.onWindowAttributesChanged(lp);
             // mDialogWindow.setAttributes(lp);
 
             // 4 将对话框的大小按屏幕大小的百分比设置
-            Point point = new Point();
-            mDisplay.getRealSize(point);
-
+            val point = Point()
+            mDisplay.getRealSize(point)
             if (widthPercent > 0) {
-                lp.width = (int) (point.x * widthPercent);
+                lp.width = (point.x * widthPercent).toInt()
             }
-
             if (heightPercent > 0) {
-                lp.height = (int) (point.y * heightPercent);
+                lp.height = (point.y * heightPercent).toInt()
             }
-
+            if (fixedWidth > 0) {
+                lp.width = fixedWidth
+            }
+            if (fixedHeight > 0) {
+                lp.height = fixedHeight
+            }
             if (gravity != 0) {
-                window.setGravity(gravity);
+                window!!.setGravity(gravity)
             }
-
-            window.setAttributes(lp);
-
+            window!!.attributes = lp
         }
     }
 
-
-    public void setWidthPercent(float widthPercent) {
-        this.widthPercent = widthPercent;
-        setAttributes();
+    fun setFixedWidth(fixedWidth: Int) {
+        this.fixedWidth = DensityUtil.dp2px(fixedWidth.toFloat())
+        setAttributes()
     }
 
-    public void setHeightPercent(float heightPercent) {
-        this.heightPercent = heightPercent;
-        setAttributes();
+    fun setFixedHeight(fixedHeight: Int) {
+        this.fixedHeight = DensityUtil.dp2px(fixedHeight.toFloat())
+        setAttributes()
     }
 
-    public void setGravity(int gravity) {
-        this.gravity = gravity;
-        setAttributes();
+    fun setDim(dim: Float) {
+        this.dim = dim
+        setAttributes()
     }
 
-    public void setHorizontalMargin(int horizontalMargin) {
-        this.horizontalMargin = DensityUtil.dp2px(horizontalMargin);
-        setAttributes();
+    fun setWidthPercent(widthPercent: Float) {
+        this.widthPercent = widthPercent
+        setAttributes()
     }
 
-
-    public void setVerticalMargin(int verticalMargin) {
-        this.verticalMargin = DensityUtil.dp2px(verticalMargin);
-        setAttributes();
+    fun setHeightPercent(heightPercent: Float) {
+        this.heightPercent = heightPercent
+        setAttributes()
     }
 
-
-    public void show() {
-        dialog.show();
+    fun setGravity(gravity: Int) {
+        this.gravity = gravity
+        setAttributes()
     }
 
-    public void dismiss() {
-        dialog.dismiss();
+    fun setHorizontalMargin(horizontalMargin: Int) {
+        this.horizontalMargin = DensityUtil.dp2px(horizontalMargin.toFloat())
+        setAttributes()
     }
 
-    public boolean isShowing() {
-        return dialog.isShowing();
+    fun setVerticalMargin(verticalMargin: Int) {
+        this.verticalMargin = DensityUtil.dp2px(verticalMargin.toFloat())
+        setAttributes()
     }
 
-    public Dialog getDialog() {
-        return dialog;
+    fun show(context: Context?) {
+        this.context = context
+        context?.run {
+            runOnUiThread {
+                if (dialog == null) {
+                    init(context)
+                }
+                dialog?.show()
+            }
+        }
     }
 
-    public void setCanceledOnTouchOutside(boolean boo) {
-        dialog.setCanceledOnTouchOutside(boo);
+    fun dismiss() {
+        dialog?.dismiss()
     }
 
-    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
-        dialog.setOnDismissListener(listener);
+    val isShowing: Boolean = dialog?.isShowing == true
+
+    fun setCanceledOnTouchOutside(boo: Boolean) {
+        dialog!!.setCanceledOnTouchOutside(boo)
     }
 
-    public float getWidthPercent() {
-        return widthPercent;
-    }
-
-    public float getHeightPercent() {
-        return heightPercent;
-    }
-
-
-    public int getGravity() {
-        return gravity;
-    }
-
-    public int getHorizontalMargin() {
-        return horizontalMargin;
-    }
-
-    public int getVerticalMargin() {
-        return verticalMargin;
+    fun setOnDismissListener(listener: DialogInterface.OnDismissListener?) {
+        dialog!!.setOnDismissListener(listener)
     }
 
 
-    public Context getContext() {
-        return context;
-    }
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
 }
-
-

@@ -1,273 +1,159 @@
-package com.gfq.dialog.expand;
+package com.gfq.dialog.expand
 
-import android.content.Context;
-import android.graphics.Color;
-
-import com.contrarywind.adapter.WheelAdapter;
-import com.contrarywind.listener.OnItemSelectedListener;
-import com.gfq.dialog.R;
-import com.gfq.dialog.base.BaseDialog;
-import com.gfq.dialog.databinding.DialogChooseSalaryRangeBinding;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context
+import android.graphics.Color
+import android.view.View
+import com.contrarywind.adapter.WheelAdapter
+import com.contrarywind.listener.OnItemSelectedListener
+import com.gfq.dialog.R
+import com.gfq.dialog.base.BaseDialog
+import com.gfq.dialog.databinding.DialogChooseSalaryRangeBinding
+import java.util.*
 
 /**
  * @created GaoFuq
  * @Date 2020/7/22 16:32
  * @Descaption
  */
-public class ChooseSalaryRangeDialog extends BaseDialog<DialogChooseSalaryRangeBinding> {
-
-    private Context context;
-    private int minSalary = 1;
-    private int maxSalary = 50;
-    private String label = "k";//单位
-    private int wvTextColor = Color.parseColor("#999999");
-    private int wvTextColorCenter = Color.parseColor("#333333");
-    private int wvTextSize = 16;
-    private WheelAdapter<String> wvMinAdapter;
-    private WheelAdapter<String> wvMaxAdapter;
-    private ArrayList<Integer> minSalaryList;
-    private ArrayList<Integer> maxSalaryList;
-    private int selectedMinSalary;
-    private int selectedMaxSalary;
-
-
-    public ChooseSalaryRangeDialog(Context context) {
-        super(context);
-    }
-    public ChooseSalaryRangeDialog(Context context,int minSalary, int maxSalary, String label) {
-        super(context);
-        this.context = context;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
-        this.label = label;
+class ChooseSalaryRangeDialog(minSalary: Int, maxSalary: Int, label: String) : BaseDialog<DialogChooseSalaryRangeBinding>() {
+    var minSalary = 1
+    var maxSalary = 50
+    var label = "k" //单位
+    var wvTextColor = Color.parseColor("#999999")
+    var wvTextColorCenter = Color.parseColor("#333333")
+    var wvTextSize = 16
+    private var wvMinAdapter: WheelAdapter<String>? = null
+    private var wvMaxAdapter: WheelAdapter<String>? = null
+    private var minSalaryList = mutableListOf<Int>()
+    private var maxSalaryList =mutableListOf<Int>()
+    private var selectedMinSalary = 0
+    private var selectedMaxSalary = 0
+    override fun layout(): Int {
+        return R.layout.dialog_choose_salary_range
     }
 
-    @Override
-    protected int layout() {
-        return R.layout.dialog_choose_salary_range;
+    override fun bindView() {
+        initData()
+        bindDialogView()
     }
 
-    @Override
-    protected void bindView() {
-        initData();
-        bindDialogView();
-    }
-
-
-    private void initData() {
-        if (minSalaryList == null) {
-            minSalaryList = new ArrayList<>();
+    private fun initData() {
+        for (i in minSalary until maxSalary + 1) {
+            minSalaryList.add(i)
         }
-        if (maxSalaryList == null) {
-            maxSalaryList = new ArrayList<>();
+        for (i in minSalary + 1 until maxSalary + 1) {
+            maxSalaryList.add(i)
         }
-
-        for (int i = minSalary; i < maxSalary + 1; i++) {
-            minSalaryList.add(i);
-        }
-
-        for (int i = minSalary + 1; i < maxSalary + 1; i++) {
-            maxSalaryList.add(i);
-        }
-
-        wvMinAdapter = new SalaryAdapter(minSalaryList);
-        wvMaxAdapter = new SalaryAdapter(maxSalaryList);
+        wvMinAdapter = SalaryAdapter(minSalaryList)
+        wvMaxAdapter = SalaryAdapter(maxSalaryList)
     }
 
-
-    
-
-    private void bindDialogView() {
-
-        dgBinding.wvMin.setAdapter(wvMinAdapter);
-        dgBinding.wvMax.setAdapter(wvMaxAdapter);
-
-        dgBinding.wvMin.setCyclic(false);
-        dgBinding.wvMax.setCyclic(false);
-        dgBinding.wvMin.setCurrentItem(0);
-        dgBinding.wvMax.setCurrentItem(0);
-
-        setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize);
-        setLineHeight(3);
-        isCenterLabel(false);
-
-        dgBinding.wvMin.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-                selectedMinSalary = minSalaryList.get(index);
-                maxSalaryList.clear();
-                if (selectedMinSalary == maxSalary) {
-                    maxSalaryList.add(selectedMinSalary);
-                    dgBinding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
-                    return;
+    private fun bindDialogView() {
+        dgBinding!!.wvMin.adapter = wvMinAdapter
+        dgBinding!!.wvMax.adapter = wvMaxAdapter
+        dgBinding!!.wvMin.setCyclic(false)
+        dgBinding!!.wvMax.setCyclic(false)
+        dgBinding!!.wvMin.currentItem = 0
+        dgBinding!!.wvMax.currentItem = 0
+        setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize)
+        setLineHeight(3f)
+        isCenterLabel(false)
+        dgBinding!!.wvMin.setOnItemSelectedListener(OnItemSelectedListener { index ->
+            selectedMinSalary = minSalaryList!![index]
+            maxSalaryList!!.clear()
+            if (selectedMinSalary == maxSalary) {
+                maxSalaryList!!.add(selectedMinSalary)
+                dgBinding!!.wvMax.adapter = SalaryAdapter(maxSalaryList)
+                return@OnItemSelectedListener
+            }
+            if (selectedMinSalary >= selectedMaxSalary) {
+                for (i in selectedMinSalary + 1 until maxSalary + 1) {
+                    maxSalaryList!!.add(i)
                 }
-                if(selectedMinSalary>=selectedMaxSalary)
-                    for (int i = selectedMinSalary + 1; i < maxSalary + 1; i++) {
-                        maxSalaryList.add(i);
-                    }
-                dgBinding.wvMax.setAdapter(new SalaryAdapter(maxSalaryList));
-                dgBinding.wvMax.setCurrentItem(0);
-
             }
-        });
-        dgBinding.wvMax.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-                selectedMaxSalary = maxSalaryList.get(index);
-            }
-        });
-
-        dgBinding.tvConfirm.setOnClickListener(v -> {
+            dgBinding!!.wvMax.adapter = SalaryAdapter(maxSalaryList)
+            dgBinding!!.wvMax.currentItem = 0
+        })
+        dgBinding!!.wvMax.setOnItemSelectedListener { index -> selectedMaxSalary = maxSalaryList!![index] }
+        dgBinding!!.tvConfirm.setOnClickListener { v: View? ->
             if (onConfirmListener != null) {
-                onConfirmListener.onConfirm(selectedMinSalary + label, selectedMaxSalary + label);
+                onConfirmListener!!.onConfirm(selectedMinSalary.toString() + label, selectedMaxSalary.toString() + label)
             }
-            dismiss();
-        });
-
-        dgBinding.tvCancel.setOnClickListener(v -> dismiss());
+            dismiss()
+        }
+        dgBinding!!.tvCancel.setOnClickListener { v: View? -> dismiss() }
     }
 
-
-    private void setWheelViewDefStyle(int textColor, int textColorCenter, int textSize) {
-        dgBinding.wvMin.setTextColorOut(textColor);
-        dgBinding.wvMin.setTextColorCenter(textColorCenter);
-        dgBinding.wvMin.setTextSize(textSize);
-        dgBinding.wvMin.setLabel(label);
-
-        dgBinding.wvMax.setTextColorOut(textColor);
-        dgBinding.wvMax.setTextColorCenter(textColorCenter);
-        dgBinding.wvMax.setTextSize(textSize);
-        dgBinding.wvMax.setLabel(label);
+    private fun setWheelViewDefStyle(textColor: Int, textColorCenter: Int, textSize: Int) {
+        dgBinding!!.wvMin.setTextColorOut(textColor)
+        dgBinding!!.wvMin.setTextColorCenter(textColorCenter)
+        dgBinding!!.wvMin.setTextSize(textSize.toFloat())
+        dgBinding!!.wvMin.setLabel(label)
+        dgBinding!!.wvMax.setTextColorOut(textColor)
+        dgBinding!!.wvMax.setTextColorCenter(textColorCenter)
+        dgBinding!!.wvMax.setTextSize(textSize.toFloat())
+        dgBinding!!.wvMax.setLabel(label)
     }
 
     //是否只显示中间的Label  默认为true
-    public void isCenterLabel(boolean b) {
-        dgBinding.wvMin.isCenterLabel(b);
-        dgBinding.wvMax.isCenterLabel(b);
+    fun isCenterLabel(b: Boolean) {
+        dgBinding!!.wvMin.isCenterLabel(b)
+        dgBinding!!.wvMax.isCenterLabel(b)
     }
 
-    public void setWheelViewStyle(int textColor, int textColorCenter, int textSize) {
-        setWheelViewDefStyle(textColor, textColorCenter, textSize);
+    fun setWheelViewStyle(textColor: Int, textColorCenter: Int, textSize: Int) {
+        setWheelViewDefStyle(textColor, textColorCenter, textSize)
     }
 
-    public void setTitleStyle(String text, int textColor, int textSize) {
-        dgBinding.tvTitle.setText(text);
-        dgBinding.tvTitle.setTextColor(textColor);
-        dgBinding.tvTitle.setTextSize(textSize);
+    fun setTitleStyle(text: String?, textColor: Int, textSize: Int) {
+        dgBinding!!.tvTitle.text = text
+        dgBinding!!.tvTitle.setTextColor(textColor)
+        dgBinding!!.tvTitle.textSize = textSize.toFloat()
     }
 
-    public void setConfirmStyle(String text, int textColor, int textSize) {
-        dgBinding.tvConfirm.setText(text);
-        dgBinding.tvConfirm.setTextColor(textColor);
-        dgBinding.tvConfirm.setTextSize(textSize);
+    fun setConfirmStyle(text: String?, textColor: Int, textSize: Int) {
+        dgBinding!!.tvConfirm.text = text
+        dgBinding!!.tvConfirm.setTextColor(textColor)
+        dgBinding!!.tvConfirm.textSize = textSize.toFloat()
     }
 
-    public void setCancelStyle(String text, int textColor, int textSize) {
-        dgBinding.tvCancel.setText(text);
-        dgBinding.tvCancel.setTextColor(textColor);
-        dgBinding.tvCancel.setTextSize(textSize);
+    fun setCancelStyle(text: String?, textColor: Int, textSize: Int) {
+        dgBinding!!.tvCancel.text = text
+        dgBinding!!.tvCancel.setTextColor(textColor)
+        dgBinding!!.tvCancel.textSize = textSize.toFloat()
     }
 
-    public void setLineHeight(float lineHeight) {
-        dgBinding.wvMin.setLineSpacingMultiplier(lineHeight);
-        dgBinding.wvMax.setLineSpacingMultiplier(lineHeight);
+    fun setLineHeight(lineHeight: Float) {
+        dgBinding!!.wvMin.setLineSpacingMultiplier(lineHeight)
+        dgBinding!!.wvMax.setLineSpacingMultiplier(lineHeight)
     }
 
-  
-
-
-
-
-    public interface OnConfirmListener {
-        void onConfirm(String minSalary, String maxSalary);
+    interface OnConfirmListener {
+        fun onConfirm(minSalary: String?, maxSalary: String?)
     }
 
-    private OnConfirmListener onConfirmListener;
-
-    public void setOnConfirmListener(OnConfirmListener onConfirmListener) {
-        this.onConfirmListener = onConfirmListener;
+    private var onConfirmListener: OnConfirmListener? = null
+    fun setOnConfirmListener(onConfirmListener: OnConfirmListener?) {
+        this.onConfirmListener = onConfirmListener
     }
 
-    static class SalaryAdapter implements WheelAdapter<String> {
-
-        private List<Integer> list;
-
-        public SalaryAdapter(List<Integer> list) {
-            this.list = list;
+    internal class SalaryAdapter(private val list: List<Int>) : WheelAdapter<String> {
+        override fun getItemsCount(): Int {
+            return list.size
         }
 
-        @Override
-        public int getItemsCount() {
-            return list.size();
+        override fun getItem(index: Int): String {
+            return list[index].toString() + ""
         }
 
-        @Override
-        public String getItem(int index) {
-            return list.get(index) + "";
-        }
-
-        @Override
-        public int indexOf(String o) {
-            return 0;
+        override fun indexOf(o: String): Int {
+            return 0
         }
     }
-    public Context getContext() {
-        return context;
-    }
 
-    public void setContext(Context context) {
-        this.context = context;
+    init {
+        this.minSalary = minSalary
+        this.maxSalary = maxSalary
+        this.label = label
     }
-
-    public int getMinSalary() {
-        return minSalary;
-    }
-
-    public void setMinSalary(int minSalary) {
-        this.minSalary = minSalary;
-    }
-
-    public int getMaxSalary() {
-        return maxSalary;
-    }
-
-    public void setMaxSalary(int maxSalary) {
-        this.maxSalary = maxSalary;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public int getWvTextColor() {
-        return wvTextColor;
-    }
-
-    public void setWvTextColor(int wvTextColor) {
-        this.wvTextColor = wvTextColor;
-    }
-
-    public int getWvTextColorCenter() {
-        return wvTextColorCenter;
-    }
-
-    public void setWvTextColorCenter(int wvTextColorCenter) {
-        this.wvTextColorCenter = wvTextColorCenter;
-    }
-
-    public int getWvTextSize() {
-        return wvTextSize;
-    }
-
-    public void setWvTextSize(int wvTextSize) {
-        this.wvTextSize = wvTextSize;
-    }
-
 }

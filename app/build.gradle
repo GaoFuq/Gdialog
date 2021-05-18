@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.GaoFuq'
 
@@ -39,4 +40,9 @@ dependencies {
     implementation project(":wheelview")
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'com.haibin:calendarview:3.6.9'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
