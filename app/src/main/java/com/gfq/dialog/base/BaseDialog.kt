@@ -31,8 +31,7 @@ import com.gfq.dialog.util.DensityUtil
  *
  * @see show(context:Context?)  方法传入context ,延迟初始化
  */
-abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,mContext: Context? = null) {
-    var context: Context? = null
+abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int, val mContext: Context? = null) {
     var dialog: Dialog? = null
     var window: Window? = null
 
@@ -233,7 +232,6 @@ abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,mContext: Context? =
                 Log.e("【BaseDialog Error】", "show()如果不传context，就必须在构造时传context")
             }
         } else {
-            this.context = context
             context.run {
                 runOnUiThread {
                     if (dialog == null) {
