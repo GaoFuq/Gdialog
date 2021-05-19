@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
@@ -31,11 +32,13 @@ import com.gfq.dialog.util.DensityUtil
  *
  * @see show(context:Context?)  方法传入context ,延迟初始化
  */
-abstract class BaseDialog<T : ViewDataBinding> {
+abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,context: Context? = null) {
     var context: Context? = null
     var dialog: Dialog? = null
     var window: Window? = null
-    lateinit var dgBinding: T
+
+    val dgBinding = DataBindingUtil.inflate<T>(LayoutInflater.from(context), layoutId, null, false)
+
 
     var gravity = Gravity.CENTER
         set(value) {
@@ -129,11 +132,15 @@ abstract class BaseDialog<T : ViewDataBinding> {
             setAttributes()
         }
 
+    init {
+        if (context != null) {
+            init(context)
+        }
+    }
 
     private fun init(context: Context) {
         dialog = Dialog(context)
         window = dialog?.window
-        dgBinding = DataBindingUtil.inflate(LayoutInflater.from(context), layout(), null, false)
         dialog?.setContentView(dgBinding.root)
         dialog?.setCanceledOnTouchOutside(true)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -145,7 +152,7 @@ abstract class BaseDialog<T : ViewDataBinding> {
     }
 
     private fun setDefaultStyle() {
-        widthPercent=0.8f
+        widthPercent = 0.8f
         window?.setBackgroundDrawable(getRoundRectDrawable(roundRectBackgroundColor))
     }
 
@@ -158,8 +165,6 @@ abstract class BaseDialog<T : ViewDataBinding> {
         return drawable
     }
 
-    @LayoutRes
-    protected abstract fun layout(): Int
 
     protected abstract fun bindView()
 
@@ -217,14 +222,24 @@ abstract class BaseDialog<T : ViewDataBinding> {
     }
 
 
-    fun show(context: Context?) {
-        this.context = context
-        context?.run {
-            runOnUiThread {
-                if (dialog == null) {
-                    init(context)
+    fun show(context: Context? = null) {
+        if (context == null) {
+            if (dialog != null) {
+                runOnUiThread {
+                    dialog!!.show()
                 }
-                dialog?.show()
+            } else {
+                Log.e("【BaseDialog Error】", "show()如果不传context，就必须在构造时传context")
+            }
+        } else {
+            this.context = context
+            context.run {
+                runOnUiThread {
+                    if (dialog == null) {
+                        init(context)
+                    }
+                    dialog?.show()
+                }
             }
         }
     }
@@ -233,7 +248,7 @@ abstract class BaseDialog<T : ViewDataBinding> {
         dialog?.dismiss()
     }
 
-    val isShowing: Boolean = dialog?.isShowing == true
+    val isShowing = dialog?.isShowing ?: false
 
     fun setCanceledOnTouchOutside(boo: Boolean) {
         dialog!!.setCanceledOnTouchOutside(boo)

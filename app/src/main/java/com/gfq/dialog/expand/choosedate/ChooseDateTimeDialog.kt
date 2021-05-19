@@ -10,7 +10,7 @@ import com.gfq.dialog.databinding.DialogChooseDateBinding
 import java.util.*
 import kotlin.math.max
 
-class ChooseDateTimeDialog : BaseDialog<DialogChooseDateBinding>() {
+class ChooseDateTimeDialog(context: Context?) : BaseDialog<DialogChooseDateBinding>(R.layout.dialog_choose_date,context) {
     private lateinit var yearAdapter: WheelAdapter<Int>
     private lateinit var monthAdapter: WheelAdapter<Int>
     private lateinit var dayAdapter: WheelAdapter<Int>
@@ -32,9 +32,6 @@ class ChooseDateTimeDialog : BaseDialog<DialogChooseDateBinding>() {
     private val wvTextColor = Color.parseColor("#999999")
     private val wvTextColorCenter = Color.parseColor("#333333")
     private val wvTextSize = 16
-    override fun layout(): Int {
-        return R.layout.dialog_choose_date
-    }
 
     override fun bindView() {
         initData()

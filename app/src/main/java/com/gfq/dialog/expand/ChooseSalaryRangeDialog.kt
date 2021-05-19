@@ -15,7 +15,7 @@ import java.util.*
  * @Date 2020/7/22 16:32
  * @Descaption
  */
-class ChooseSalaryRangeDialog(minSalary: Int, maxSalary: Int, label: String) : BaseDialog<DialogChooseSalaryRangeBinding>() {
+class ChooseSalaryRangeDialog(context: Context?,minSalary: Int, maxSalary: Int, label: String) : BaseDialog<DialogChooseSalaryRangeBinding>(R.layout.dialog_choose_salary_range,context) {
     var minSalary = 1
     var maxSalary = 50
     var label = "k" //单位
@@ -25,12 +25,9 @@ class ChooseSalaryRangeDialog(minSalary: Int, maxSalary: Int, label: String) : B
     private var wvMinAdapter: WheelAdapter<String>? = null
     private var wvMaxAdapter: WheelAdapter<String>? = null
     private var minSalaryList = mutableListOf<Int>()
-    private var maxSalaryList =mutableListOf<Int>()
+    private var maxSalaryList = mutableListOf<Int>()
     private var selectedMinSalary = 0
     private var selectedMaxSalary = 0
-    override fun layout(): Int {
-        return R.layout.dialog_choose_salary_range
-    }
 
     override fun bindView() {
         initData()
@@ -49,56 +46,56 @@ class ChooseSalaryRangeDialog(minSalary: Int, maxSalary: Int, label: String) : B
     }
 
     private fun bindDialogView() {
-        dgBinding!!.wvMin.adapter = wvMinAdapter
-        dgBinding!!.wvMax.adapter = wvMaxAdapter
-        dgBinding!!.wvMin.setCyclic(false)
-        dgBinding!!.wvMax.setCyclic(false)
-        dgBinding!!.wvMin.currentItem = 0
-        dgBinding!!.wvMax.currentItem = 0
+        dgBinding.wvMin.adapter = wvMinAdapter
+        dgBinding.wvMax.adapter = wvMaxAdapter
+        dgBinding.wvMin.setCyclic(false)
+        dgBinding.wvMax.setCyclic(false)
+        dgBinding.wvMin.currentItem = 0
+        dgBinding.wvMax.currentItem = 0
         setWheelViewDefStyle(wvTextColor, wvTextColorCenter, wvTextSize)
         setLineHeight(3f)
         isCenterLabel(false)
-        dgBinding!!.wvMin.setOnItemSelectedListener(OnItemSelectedListener { index ->
-            selectedMinSalary = minSalaryList!![index]
-            maxSalaryList!!.clear()
+        dgBinding.wvMin.setOnItemSelectedListener(OnItemSelectedListener { index ->
+            selectedMinSalary = minSalaryList[index]
+            maxSalaryList.clear()
             if (selectedMinSalary == maxSalary) {
-                maxSalaryList!!.add(selectedMinSalary)
-                dgBinding!!.wvMax.adapter = SalaryAdapter(maxSalaryList)
+                maxSalaryList.add(selectedMinSalary)
+                dgBinding.wvMax.adapter = SalaryAdapter(maxSalaryList)
                 return@OnItemSelectedListener
             }
             if (selectedMinSalary >= selectedMaxSalary) {
                 for (i in selectedMinSalary + 1 until maxSalary + 1) {
-                    maxSalaryList!!.add(i)
+                    maxSalaryList.add(i)
                 }
             }
-            dgBinding!!.wvMax.adapter = SalaryAdapter(maxSalaryList)
-            dgBinding!!.wvMax.currentItem = 0
+            dgBinding.wvMax.adapter = SalaryAdapter(maxSalaryList)
+            dgBinding.wvMax.currentItem = 0
         })
-        dgBinding!!.wvMax.setOnItemSelectedListener { index -> selectedMaxSalary = maxSalaryList!![index] }
-        dgBinding!!.tvConfirm.setOnClickListener { v: View? ->
+        dgBinding.wvMax.setOnItemSelectedListener { index -> selectedMaxSalary = maxSalaryList[index] }
+        dgBinding.tvConfirm.setOnClickListener { v: View? ->
             if (onConfirmListener != null) {
                 onConfirmListener!!.onConfirm(selectedMinSalary.toString() + label, selectedMaxSalary.toString() + label)
             }
             dismiss()
         }
-        dgBinding!!.tvCancel.setOnClickListener { v: View? -> dismiss() }
+        dgBinding.tvCancel.setOnClickListener { v: View? -> dismiss() }
     }
 
     private fun setWheelViewDefStyle(textColor: Int, textColorCenter: Int, textSize: Int) {
-        dgBinding!!.wvMin.setTextColorOut(textColor)
-        dgBinding!!.wvMin.setTextColorCenter(textColorCenter)
-        dgBinding!!.wvMin.setTextSize(textSize.toFloat())
-        dgBinding!!.wvMin.setLabel(label)
-        dgBinding!!.wvMax.setTextColorOut(textColor)
-        dgBinding!!.wvMax.setTextColorCenter(textColorCenter)
-        dgBinding!!.wvMax.setTextSize(textSize.toFloat())
-        dgBinding!!.wvMax.setLabel(label)
+        dgBinding.wvMin.setTextColorOut(textColor)
+        dgBinding.wvMin.setTextColorCenter(textColorCenter)
+        dgBinding.wvMin.setTextSize(textSize.toFloat())
+        dgBinding.wvMin.setLabel(label)
+        dgBinding.wvMax.setTextColorOut(textColor)
+        dgBinding.wvMax.setTextColorCenter(textColorCenter)
+        dgBinding.wvMax.setTextSize(textSize.toFloat())
+        dgBinding.wvMax.setLabel(label)
     }
 
     //是否只显示中间的Label  默认为true
     fun isCenterLabel(b: Boolean) {
-        dgBinding!!.wvMin.isCenterLabel(b)
-        dgBinding!!.wvMax.isCenterLabel(b)
+        dgBinding.wvMin.isCenterLabel(b)
+        dgBinding.wvMax.isCenterLabel(b)
     }
 
     fun setWheelViewStyle(textColor: Int, textColorCenter: Int, textSize: Int) {
@@ -106,26 +103,26 @@ class ChooseSalaryRangeDialog(minSalary: Int, maxSalary: Int, label: String) : B
     }
 
     fun setTitleStyle(text: String?, textColor: Int, textSize: Int) {
-        dgBinding!!.tvTitle.text = text
-        dgBinding!!.tvTitle.setTextColor(textColor)
-        dgBinding!!.tvTitle.textSize = textSize.toFloat()
+        dgBinding.tvTitle.text = text
+        dgBinding.tvTitle.setTextColor(textColor)
+        dgBinding.tvTitle.textSize = textSize.toFloat()
     }
 
     fun setConfirmStyle(text: String?, textColor: Int, textSize: Int) {
-        dgBinding!!.tvConfirm.text = text
-        dgBinding!!.tvConfirm.setTextColor(textColor)
-        dgBinding!!.tvConfirm.textSize = textSize.toFloat()
+        dgBinding.tvConfirm.text = text
+        dgBinding.tvConfirm.setTextColor(textColor)
+        dgBinding.tvConfirm.textSize = textSize.toFloat()
     }
 
     fun setCancelStyle(text: String?, textColor: Int, textSize: Int) {
-        dgBinding!!.tvCancel.text = text
-        dgBinding!!.tvCancel.setTextColor(textColor)
-        dgBinding!!.tvCancel.textSize = textSize.toFloat()
+        dgBinding.tvCancel.text = text
+        dgBinding.tvCancel.setTextColor(textColor)
+        dgBinding.tvCancel.textSize = textSize.toFloat()
     }
 
     fun setLineHeight(lineHeight: Float) {
-        dgBinding!!.wvMin.setLineSpacingMultiplier(lineHeight)
-        dgBinding!!.wvMax.setLineSpacingMultiplier(lineHeight)
+        dgBinding.wvMin.setLineSpacingMultiplier(lineHeight)
+        dgBinding.wvMax.setLineSpacingMultiplier(lineHeight)
     }
 
     interface OnConfirmListener {
