@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
-import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.gfq.dialog.util.DensityUtil
@@ -32,12 +31,12 @@ import com.gfq.dialog.util.DensityUtil
  *
  * @see show(context:Context?)  方法传入context ,延迟初始化
  */
-abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,context: Context? = null) {
+abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,mContext: Context? = null) {
     var context: Context? = null
     var dialog: Dialog? = null
     var window: Window? = null
 
-    val dgBinding = DataBindingUtil.inflate<T>(LayoutInflater.from(context), layoutId, null, false)
+    var dgBinding:T = DataBindingUtil.inflate<T>(LayoutInflater.from(mContext), layoutId, null, false)
 
 
     var gravity = Gravity.CENTER
@@ -132,9 +131,11 @@ abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,context: Context? = 
             setAttributes()
         }
 
+
     init {
-        if (context != null) {
-            init(context)
+
+        if (mContext != null) {
+            init(mContext)
         }
     }
 
@@ -237,8 +238,10 @@ abstract class BaseDialog<T : ViewDataBinding>(layoutId:Int,context: Context? = 
                 runOnUiThread {
                     if (dialog == null) {
                         init(context)
+                        dialog?.show()
+                    }else{
+                        dialog!!.show()
                     }
-                    dialog?.show()
                 }
             }
         }
